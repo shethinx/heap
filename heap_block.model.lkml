@@ -1,5 +1,5 @@
-connection: "heap_sql_folio_hd"
-
+connection: "main_redshift_cluster"
+#
 # include all the views
 include: "*.view"
 

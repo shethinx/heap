@@ -1,5 +1,5 @@
 view: all_events {
-  sql_table_name: main_production.all_events ;;
+  sql_table_name: heap_thinx.all_events ;;
 
   dimension: event_id {
     type: number
