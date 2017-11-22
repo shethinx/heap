@@ -46,6 +46,11 @@ view: sessions {
     sql: ${TABLE}.event_id ;;
   }
 
+  dimension: ip {
+    type: string
+    sql: ${TABLE}.ip ;;
+  }
+
   dimension: landing_page {
     sql: ${TABLE}.landing_page ;;
   }
@@ -126,6 +131,11 @@ view: sessions {
   measure: count {
     type: count
     drill_fields: [detail*]
+  }
+
+  measure: count_distinct_ip {
+    type: count_distinct
+    sql: ${TABLE}.ip ;;
   }
 
   measure: count_users {
