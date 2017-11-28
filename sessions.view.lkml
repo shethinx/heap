@@ -150,6 +150,18 @@ view: sessions {
     value_format_name: decimal_1
   }
 
+  dimension: referring_domain_bucket {
+    type: string
+    sql: CASE
+      WHEN ${TABLE}.referrer ILIKE '%google%' THEN 'Google'
+      WHEN ${TABLE}.referrer ILIKE '%instagram%' THEN 'Instagram'
+      WHEN ${TABLE}.referrer ILIKE '%acebook%' THEN 'Facebook'
+      WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
+      WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
+      WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
+      ELSE 'Direct and misc traffic'
+      END ;;
+  }
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [session_id, app_name, user_id, utm_source, users.identity]
