@@ -159,7 +159,8 @@ view: sessions {
       WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
       WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
       WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
-      ELSE 'Direct and misc traffic'
+      WHEN ${TABLE}.referrer IS NULL THEN 'Direct'
+      ELSE 'Other'
       END ;;
   }
   # ----- Sets of fields for drilling ------
