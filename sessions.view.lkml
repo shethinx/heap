@@ -150,7 +150,7 @@ view: sessions {
     value_format_name: decimal_1
   }
 
-  dimension: referring_domain_bucket {
+  dimension: referrer_bucket {
     type: string
     sql: CASE
       WHEN ${TABLE}.referrer ILIKE '%google%' THEN 'Google'
@@ -158,11 +158,14 @@ view: sessions {
       WHEN ${TABLE}.referrer ILIKE '%acebook%' THEN 'Facebook'
       WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
       WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
+      WHEN ${TABLE}.referrer ILIKE '%yahoo%'  THEN 'Yahoo'
       WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
       WHEN ${TABLE}.referrer IS NULL THEN 'Direct'
-      ELSE 'Other'
+      WHEN ${TABLE}.referrer NOT ILIKE '%shethinx%' THEN 'Other'
+      --ELSE 'Other' to leave out shethinx
       END ;;
   }
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [session_id, app_name, user_id, utm_source, users.identity]
