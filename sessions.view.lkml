@@ -71,6 +71,11 @@ view: sessions {
     sql: ${TABLE}.referrer ;;
   }
 
+  dimension: referrer_abbreviated {
+    type: string
+    sql: regexp_replace(${TABLE}.referrer, '(http://)|(https://)|(www.)|/$', '');;
+  }
+
   dimension: referrer_domain {
     sql: split_part(${referrer},'/',3) ;;
   }
