@@ -174,28 +174,32 @@ view: sessions {
   dimension: source_whether_utm_or_referrer {
     type: string
     sql: CASE
-      WHEN ${TABLE}.landing_page ILIKE '%friendbuy%' or ${TABLE}.referring_site ILIKE '%friendbuy%'
+      WHEN ${TABLE}.landing_page ILIKE '%friendbuy%' or ${TABLE}.referrer ILIKE '%friendbuy%'
         THEN 'Friendbuy'
-      WHEN ${TABLE}.landing_page ILIKE '%instagram%' or ${TABLE}.referring_site ILIKE '%instagram%'
-        OR ${TABLE}.referring_site ILIKE '%facebook%' or ${TABLE}.landing_page ILIKE '%facebook%'
+      WHEN ${TABLE}.landing_page ILIKE '%instagram%' or ${TABLE}.referrer ILIKE '%instagram%'
+        OR ${TABLE}.referrer ILIKE '%facebook%' or ${TABLE}.landing_page ILIKE '%facebook%'
         -- OR ${TABLE}.landing_page ILIKE '%fbig%'
         THEN 'FBIG'
-      WHEN ${TABLE}.landing_page ILIKE '%pinterest%'  or ${TABLE}.referring_site ILIKE '%pinterest%'
+      WHEN ${TABLE}.landing_page ILIKE '%pinterest%'  or ${TABLE}.referrer ILIKE '%pinterest%'
         THEN 'Pinterest'
       WHEN ${TABLE}.landing_page ILIKE '%affiliate%'  THEN 'Affiliate'
       WHEN ${TABLE}.landing_page ILIKE '%gclid%'  THEN 'Adwords'
-      WHEN ${TABLE}.referring_site ILIKE '%google%'
+      WHEN ${TABLE}.referrer ILIKE '%google%'
         THEN 'Google Organic'
-      WHEN ${TABLE}.referring_site ILIKE '%bing%'  THEN 'Bing' --separate bing paid and organic
-      WHEN ${TABLE}.referring_site ILIKE '%youtube%' OR ${TABLE}.landing_page ILIKE '%youtube%'
+      WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing' --separate bing paid and organic
+      WHEN ${TABLE}.referrer ILIKE '%youtube%' OR ${TABLE}.landing_page ILIKE '%youtube%'
         THEN 'YouTube'
-      WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referring_site ILIKE '%mail%' or ${TABLE}.referring_site ILIKE '%outlook%'
+      WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referrer ILIKE '%mail%' or ${TABLE}.referrer ILIKE '%outlook%'
         THEN 'Email'
-      WHEN ${TABLE}.referring_site ILIKE '%yahoo%' THEN 'Yahoo'
-      WHEN ${TABLE}.referring_site = '' or ${TABLE}.referring_site IS null THEN 'Direct'
+      WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
+      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null THEN 'Direct'
       ELSE 'Other'
       END ;;
   }
+
+
+
+
 
   # ----- Sets of fields for drilling ------
   set: detail {
