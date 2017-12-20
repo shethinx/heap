@@ -197,29 +197,19 @@ view: sessions {
       END ;;
   }
 
-
   measure: organic_sessions_count {
     type: count_distinct
     filters: {
-      field:  referrer
-      value: "%bing%,%google%"
+      field:  source_whether_utm_or_referrer
+      value: "Google Organic, Direct"
     }
-    sql: ${TABLE}.ip  ;;
-  }
-
-  measure: unorganic_sessions_count {
-    type: count_distinct
     filters: {
-      field:  referrer
-      value: "-%bing%,-%google%"
+      field:  landing_page
+      value: "-%utm%,-%UTM%,-%gclid%"
     }
     sql: ${TABLE}.ip  ;;
   }
 
-  measure: overall_sessions_count {
-    type: count_distinct
-    sql: ${TABLE}.ip  ;;
-  }
 
   # ----- Sets of fields for drilling ------
   set: detail {
