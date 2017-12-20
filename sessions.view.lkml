@@ -171,6 +171,7 @@ view: sessions {
       END ;;
   }
 
+# TODO: See why it's missing a lot of Adwords traffic. No utms in the landing page column
   dimension: source_whether_utm_or_referrer {
     type: string
     sql: CASE
@@ -183,7 +184,7 @@ view: sessions {
       WHEN ${TABLE}.landing_page ILIKE '%pinterest%'  or ${TABLE}.referrer ILIKE '%pinterest%'
         THEN 'Pinterest'
       WHEN ${TABLE}.landing_page ILIKE '%affiliate%'  THEN 'Affiliate'
-      WHEN ${TABLE}.landing_page ILIKE '%gclid%'  THEN 'Adwords'
+      WHEN ${TABLE}.utm_term ILIKE '%google%'  THEN 'Adwords'
       WHEN ${TABLE}.referrer ILIKE '%google%'
         THEN 'Google Organic'
       WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing' --separate bing paid and organic
