@@ -185,15 +185,13 @@ view: sessions {
         THEN 'Pinterest'
       WHEN ${TABLE}.landing_page ILIKE '%affiliate%'  THEN 'Affiliate'
       WHEN ${TABLE}.utm_term ILIKE '%google%'  THEN 'Adwords'
-      WHEN ${TABLE}.referrer ILIKE '%google%'
-        THEN 'Google Organic'
-      WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing' --separate bing paid and organic
       WHEN ${TABLE}.referrer ILIKE '%youtube%' OR ${TABLE}.landing_page ILIKE '%youtube%'
         THEN 'YouTube'
       WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referrer ILIKE '%mail%' or ${TABLE}.referrer ILIKE '%outlook%'
         THEN 'Email'
       WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
-      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null THEN 'Direct'
+      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or ${TABLE}.referrer ILIKE '%google%' or WHEN ${TABLE}.referrer ILIKE '%bing%'
+        THEN 'Organic'
       ELSE 'Other'
       END ;;
   }
@@ -202,7 +200,7 @@ view: sessions {
     type: count_distinct
     filters: {
       field:  source_whether_utm_or_referrer
-      value: "Google Organic, Direct"
+      value: "Organic"
     }
     filters: {
       field:  landing_page
