@@ -190,7 +190,7 @@ view: sessions {
       WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referrer ILIKE '%mail%' or ${TABLE}.referrer ILIKE '%outlook%'
         THEN 'Email'
       WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
-      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or ${TABLE}.referrer ILIKE '%google%' or WHEN ${TABLE}.referrer ILIKE '%bing%'
+      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or ${TABLE}.referrer ILIKE '%google%' or ${TABLE}.referrer ILIKE '%bing%'
         THEN 'Organic'
       ELSE 'Other'
       END ;;
