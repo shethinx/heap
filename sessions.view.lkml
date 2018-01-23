@@ -171,7 +171,8 @@ view: sessions {
       END ;;
   }
 
-# TODO: See why it's missing a lot of Adwords traffic. No utms in the landing page column
+# Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
+# Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.
   dimension: source_whether_utm_or_referrer {
     type: string
     sql: CASE
@@ -184,14 +185,14 @@ view: sessions {
       WHEN ${TABLE}.landing_page ILIKE '%pinterest%'  or ${TABLE}.referrer ILIKE '%pinterest%'
         THEN 'Pinterest'
       WHEN ${TABLE}.landing_page ILIKE '%affiliate%'  THEN 'Affiliate'
-      WHEN ${TABLE}.utm_term ILIKE '%google%'  THEN 'Adwords'
+      WHEN ${TABLE}.referrer ILIKE '%google%'  AND ${TABLE}.referrer NOT ILIKE '%url%' AND ${TABLE}.referrer NOT ILIKE '%email%' THEN 'Google Paid and Unpaid Search'
       WHEN ${TABLE}.referrer ILIKE '%youtube%' OR ${TABLE}.landing_page ILIKE '%youtube%'
         THEN 'YouTube'
       WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referrer ILIKE '%mail%' or ${TABLE}.referrer ILIKE '%outlook%'
         THEN 'Email'
       WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
-      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or ${TABLE}.referrer ILIKE '%google%' or ${TABLE}.referrer ILIKE '%bing%'
-        THEN 'Organic'
+      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or (${TABLE}.referrer ILIKE '%google%' and ${TABLE}.referrer ILIKE '%url%') or ${TABLE}.referrer ILIKE '%bing%'
+        THEN 'Direct'
       ELSE 'Other'
       END ;;
   }
