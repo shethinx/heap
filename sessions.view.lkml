@@ -155,22 +155,6 @@ view: sessions {
     value_format_name: decimal_1
   }
 
-#   dimension: referrer_bucket {
-#     type: string
-#     sql: CASE
-#       WHEN ${TABLE}.referrer ILIKE '%google%' THEN 'Google'
-#       WHEN ${TABLE}.referrer ILIKE '%instagram%' THEN 'Instagram'
-#       WHEN ${TABLE}.referrer ILIKE '%facebook%' THEN 'Facebook'
-#       WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
-#       WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
-#       WHEN ${TABLE}.referrer ILIKE '%yahoo%'  THEN 'Yahoo'
-#       WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
-#       WHEN ${TABLE}.referrer IS NULL THEN 'Direct'
-#       WHEN ${TABLE}.referrer NOT ILIKE '%shethinx%' THEN 'Other'
-#       --ELSE 'Other' to leave out shethinx
-#       END ;;
-#   }
-
 # Heap's referrer column includes the UTMs
 # Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
 # Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.
