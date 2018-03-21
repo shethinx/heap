@@ -1,5 +1,7 @@
 connection: "main_redshift_cluster"
-#
+# This block is mostly prebuilt
+# Heap is also in the main thinx and icon models
+label: "Thinx Heap Block"
 # include all the views
 include: "*.view"
 
