@@ -155,44 +155,56 @@ view: sessions {
     value_format_name: decimal_1
   }
 
-  dimension: referrer_bucket {
-    type: string
-    sql: CASE
-      WHEN ${TABLE}.referrer ILIKE '%google%' THEN 'Google'
-      WHEN ${TABLE}.referrer ILIKE '%instagram%' THEN 'Instagram'
-      WHEN ${TABLE}.referrer ILIKE '%facebook%' THEN 'Facebook'
-      WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
-      WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
-      WHEN ${TABLE}.referrer ILIKE '%yahoo%'  THEN 'Yahoo'
-      WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
-      WHEN ${TABLE}.referrer IS NULL THEN 'Direct'
-      WHEN ${TABLE}.referrer NOT ILIKE '%shethinx%' THEN 'Other'
-      --ELSE 'Other' to leave out shethinx
-      END ;;
-  }
+#   dimension: referrer_bucket {
+#     type: string
+#     sql: CASE
+#       WHEN ${TABLE}.referrer ILIKE '%google%' THEN 'Google'
+#       WHEN ${TABLE}.referrer ILIKE '%instagram%' THEN 'Instagram'
+#       WHEN ${TABLE}.referrer ILIKE '%facebook%' THEN 'Facebook'
+#       WHEN ${TABLE}.referrer ILIKE '%bing%'  THEN 'Bing'
+#       WHEN ${TABLE}.referrer ILIKE '%pinterest%'  THEN 'Pinterest'
+#       WHEN ${TABLE}.referrer ILIKE '%yahoo%'  THEN 'Yahoo'
+#       WHEN ${TABLE}.referrer ILIKE '%youtube%' THEN 'YouTube'
+#       WHEN ${TABLE}.referrer IS NULL THEN 'Direct'
+#       WHEN ${TABLE}.referrer NOT ILIKE '%shethinx%' THEN 'Other'
+#       --ELSE 'Other' to leave out shethinx
+#       END ;;
+#   }
 
+# Heap's referrer column includes the UTMs
 # Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
 # Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.
-  dimension: source_whether_utm_or_referrer {
+  dimension: source_we_defined {
     type: string
     sql: CASE
-      WHEN ${TABLE}.landing_page ILIKE '%friendbuy%' or ${TABLE}.referrer ILIKE '%friendbuy%'
-        THEN 'Friendbuy'
-      WHEN ${TABLE}.landing_page ILIKE '%instagram%' or ${TABLE}.referrer ILIKE '%instagram%'
-        OR ${TABLE}.referrer ILIKE '%facebook%' or ${TABLE}.landing_page ILIKE '%facebook%'
-        -- OR ${TABLE}.landing_page ILIKE '%fbig%'
-        THEN 'FBIG'
-      WHEN ${TABLE}.landing_page ILIKE '%pinterest%'  or ${TABLE}.referrer ILIKE '%pinterest%'
-        THEN 'Pinterest'
-      WHEN ${TABLE}.landing_page ILIKE '%affiliate%'  THEN 'Affiliate'
-      WHEN ${TABLE}.referrer ILIKE '%google%'  AND ${TABLE}.referrer NOT ILIKE '%url%' AND ${TABLE}.referrer NOT ILIKE '%email%' THEN 'Google Paid and Unpaid Search'
-      WHEN ${TABLE}.referrer ILIKE '%youtube%' OR ${TABLE}.landing_page ILIKE '%youtube%'
-        THEN 'YouTube'
-      WHEN ${TABLE}.landing_page ILIKE '%email%' or ${TABLE}.referrer ILIKE '%mail%' or ${TABLE}.referrer ILIKE '%outlook%'
+      WHEN ${TABLE}.referrer ILIKE '%gilt%' then 'Gilt'
+      WHEN  ${TABLE}.referrer ILIKE '%mail%'
+        or ${TABLE}.referrer ILIKE '%outlook%'
+        or ${TABLE}.referrer ILIKE '%google.android.gm%'
         THEN 'Email'
-      WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
-      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null or (${TABLE}.referrer ILIKE '%google%' and ${TABLE}.referrer ILIKE '%url%') or ${TABLE}.referrer ILIKE '%bing%'
+      WHEN ${TABLE}.referrer = '' or ${TABLE}.referrer IS null
+        and ${TABLE}.referrer not ilike '%utm%'
         THEN 'Direct'
+      --WHEN ${TABLE}.landing_page ILIKE '%friendbuy%' or ${TABLE}.referrer ILIKE '%friendbuy%'
+      --  or ${TABLE}.landing_page ILIKE '%affiliate%'
+      --  THEN 'Friendbuy'
+      WHEN ${TABLE}.referrer ILIKE '%google%'
+        and len(${TABLE}.referrer) < 60
+        and ${TABLE}.referrer not ilike '%utm%'
+        THEN 'Google Organic Search'
+      WHEN ${TABLE}.referrer ILIKE '%google%'
+        THEN 'Adwords'
+      WHEN ${TABLE}.referrer ILIKE '%instagram%'
+        OR ${TABLE}.referrer ILIKE '%facebook%'
+        OR ${TABLE}.landing_page ILIKE '%fbig%'
+        THEN 'FBIG'
+      WHEN ${TABLE}.landing_page ILIKE '%pinterest%'
+        or ${TABLE}.referrer ILIKE '%pinterest%'
+        THEN 'Pinterest'
+      WHEN ${TABLE}.referrer ILIKE '%youtube%'
+        THEN 'YouTube'
+      WHEN ${TABLE}.referrer ILIKE '%yahoo%' THEN 'Yahoo'
+      WHEN ${TABLE}.referrer ILIKE '%bing%' THEN 'Bing'
       ELSE 'Other'
       END ;;
   }
@@ -200,8 +212,8 @@ view: sessions {
   measure: organic_sessions_count {
     type: count_distinct
     filters: {
-      field:  source_whether_utm_or_referrer
-      value: "Organic"
+      field:  source_we_defined
+      value: "Google Organic Search, Bing"
     }
     filters: {
       field:  landing_page
