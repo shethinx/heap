@@ -220,6 +220,81 @@ view: sessions {
       END ;;
   }
 
+  dimension: marketing_channel{
+    type: string
+    sql: CASE
+    when ${TABLE}.utm_medium ILIKE '%email%'
+    or ${TABLE}.referrer ILIKE '%mail.google.com%'
+    or ${TABLE}.referrer ILIKE '%outlook.live.com%'
+    or ${TABLE}.referrer ILIKE '%mail.yahoo.com%'
+      THEN 'Email'
+    when ${TABLE}.utm_medium ILIKE '%affiliate%'
+    or ${TABLE}.utm_source ILIKE '%pepperjam%'
+      THEN 'Affiliate'
+    when ${TABLE}.utm_medium ILIKE '%display%'
+    or ${TABLE}.utm_source ILIKE '%gdn%'
+    or ${TABLE}.referrer ILIKE '%criteo%'
+    or ${TABLE}.referrer ILIKE '%googleads.g.doubleclick.net%'
+    or ${TABLE}.referrer ILIKE '%tpc.googlesyndication.com%'
+      THEN 'Display'
+    when (${TABLE}.referrer ILIKE '%google%'
+    or ${TABLE}.referrer ILIKE '%bing%'
+    or ${TABLE}.referrer ILIKE '%yahoo%'
+    or ${TABLE}.referrer ILIKE '%msn%'
+    or ${TABLE}.referrer ILIKE '%ask%'
+    or ${TABLE}.referrer ILIKE '%baidu%'
+    or ${TABLE}.referrer ILIKE '%yandex%'
+    or ${TABLE}.referrer ILIKE '%duckduckgo%'
+    )
+    and ${TABLE}.utm_medium IS NOT NULL
+    or ${TABLE}.landing_page ILIKE '%gclid=%'
+    or ${TABLE}.landing_page ILIKE '%msclkid=%'
+      THEN 'Paid Search'
+    when ${TABLE}.utm_source ILIKE '%FBIG%'
+    or (${TABLE}.referrer ILIKE '%twitter.com%'
+    or ${TABLE}.referrer ILIKE '%linkedin.com%'
+    or ${TABLE}.referrer ILIKE '%lnkd.in%'
+    or ${TABLE}.referrer ILIKE '%reddit.com%'
+    or ${TABLE}.referrer ILIKE '%pinterest.com%'
+    or ${TABLE}.referrer ILIKE '%snapchat.com%'
+    or ${TABLE}.referrer ILIKE '%youtube.com%'
+    ) and ${TABLE}.utm_medium IS NOT NULL
+    or ${TABLE}.landing_page ILIKE '%fbaid=%'
+    or ${TABLE}.landing_page ILIKE '%licid=%'
+      THEN 'Paid Social'
+    when ${TABLE}.referrer ILIKE '%google%'
+    or ${TABLE}.referrer ILIKE '%bing%'
+    or ${TABLE}.referrer ILIKE '%yahoo%'
+    or ${TABLE}.referrer ILIKE '%msn%'
+    or ${TABLE}.referrer ILIKE '%ask%'
+    or ${TABLE}.referrer ILIKE '%baidu%'
+    or ${TABLE}.referrer ILIKE '%yandex%'
+    or ${TABLE}.referrer ILIKE '%duckduckgo%'
+      THEN 'Organic Search'
+    when ${TABLE}.referrer ILIKE '%twitter.com%'
+    or ${TABLE}.referrer ILIKE '%linkedin.com%'
+    or ${TABLE}.referrer ILIKE '%lnkd.in%'
+    or ${TABLE}.referrer ILIKE '%reddit.com%'
+    or ${TABLE}.referrer ILIKE '%pinterest.com%'
+    or ${TABLE}.referrer ILIKE '%snapchat.com%'
+    or ${TABLE}.referrer ILIKE '%youtube.com%'
+      THEN 'Organic Social'
+    when ${TABLE}.utm_source ILIKE '%email%'
+      THEN 'Email'
+    when ${TABLE}.utm_source ILIKE '%Friendbuy%'
+      THEN 'Refer-A-Friend'
+    when ${TABLE}.utm_medium IS NOT NULL
+      THEN 'Other Channel'
+    when ${TABLE}.referrer IS NULL
+    or ${TABLE}.referrer ILIKE '%android-app%'
+    or ${TABLE}.referrer ILIKE '%shethinx.com%'
+      THEN 'Direct'
+    when ${TABLE}.referrer IS NOT NULL
+      THEN 'Other Referral'
+    ELSE 'Other Referral'
+    END;;
+  }
+
   measure: organic_sessions_count {
     type: count_distinct
     filters: {
