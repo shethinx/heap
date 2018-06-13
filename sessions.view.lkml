@@ -156,8 +156,8 @@ view: sessions {
   }
 
   measure: total_sessions {
-    type: sum
-    sql: count(${session_id}) ;;
+    type: count_distinct
+    sql: ${session_id} ;;
   }
 
 # Heap's referrer column includes the UTMs
