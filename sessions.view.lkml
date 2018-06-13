@@ -155,6 +155,11 @@ view: sessions {
     value_format_name: decimal_1
   }
 
+  measure: total_sessions {
+    type: sum
+    sql: count(${session_id}) ;;
+  }
+
 # Heap's referrer column includes the UTMs
 # Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
 # Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.
