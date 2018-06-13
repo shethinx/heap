@@ -303,8 +303,8 @@ view: sessions {
   measure: organic_sessions_count {
     type: count_distinct
     filters: {
-      field:  source_we_defined
-      value: "Google Organic Search, Bing"
+      field:  marketing_channel
+      value: "Organic Search, Organic Social"
     }
     filters: {
       field:  landing_page
