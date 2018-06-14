@@ -34,6 +34,11 @@ explore: all_events {
   }
 }
 
+explore: sessions_icon {
+  label: "Icon Sessions"
+}
+
+
 explore: sessions {
   join: users {
     type: left_outer
