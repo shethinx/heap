@@ -300,6 +300,19 @@ view: sessions_icon {
           END;;
   }
 
+  measure: organic_direct_sessions_count {
+    type: count_distinct
+    filters: {
+      field:  marketing_channel
+      value: "Organic Search, Organic Social, Direct"
+    }
+    filters: {
+      field:  landing_page
+      value: "-%utm%,-%UTM%,-%gclid%"
+    }
+    sql: ${TABLE}.ip  ;;
+  }
+
   measure: organic_sessions_count {
     type: count_distinct
     filters: {
