@@ -1,5 +1,5 @@
 view: sessions_icon {
-  sql_table_name: heap_icon.sessions ;;
+  sql_table_name: heap_{{ _model._name }}.sessions ;;
 
   dimension: session_id {
     type: number
