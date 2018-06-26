@@ -35,6 +35,7 @@ explore: all_events {
 }
 
 explore: sessions {
+  label: "Icon Sessions 2?"
   }
 
 explore: sessions_icon {
