@@ -35,28 +35,24 @@ explore: all_events {
 }
 
 explore: sessions {
-  label: "Icon Sessions 2?"
-  }
-
-explore: sessions_icon {
   label: "Icon Sessions"
   join: users {
     type: left_outer
-    sql_on: ${sessions_icon.user_id} = ${users.user_id} ;;
+    sql_on: ${sessions.user_id} = ${users.user_id} ;;
     relationship: many_to_one
   }
 
   join: user_facts {
     view_label: "Users"
     type: left_outer
-    sql_on: ${sessions_icon.user_id} = ${user_facts.user_id} ;;
+    sql_on: ${sessions.user_id} = ${user_facts.user_id} ;;
     relationship: many_to_one
   }
 
   join: session_facts {
     view_label: "Sessions"
     type: left_outer
-    sql_on: ${sessions_icon.session_unique_id} = ${session_facts.session_unique_id} ;;
+    sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
     relationship: one_to_one
   }
 

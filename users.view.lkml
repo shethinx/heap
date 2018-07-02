@@ -1,5 +1,5 @@
 view: users {
-  sql_table_name: heap_thinx.users ;;
+  sql_table_name: heap_{{ _model._name }}.users ;;
 
   dimension: user_id {
     primary_key: yes
