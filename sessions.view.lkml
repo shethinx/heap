@@ -313,6 +313,19 @@ view: sessions {
     sql: ${TABLE}.ip  ;;
   }
 
+  measure: direct_sessions_count {
+    type: count_distinct
+    filters: {
+      field:  marketing_channel
+      value: "Direct"
+    }
+    filters: {
+      field:  landing_page
+      value: "-%utm%,-%UTM%,-%gclid%"
+    }
+    sql: ${TABLE}.ip  ;;
+  }
+
 
   # ----- Sets of fields for drilling ------
   set: detail {
