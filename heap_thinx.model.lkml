@@ -35,6 +35,7 @@ explore: all_events {
 }
 
 explore: sessions {
+  label: "Sessions Thinx"
   join: users {
     type: left_outer
     sql_on: ${sessions.user_id} = ${users.user_id} ;;
