@@ -1,5 +1,5 @@
 view: sessions {
-  sql_table_name: heap{{ _model._name }}.sessions ;;
+  sql_table_name: heap_thinx.sessions ;;
 
   dimension: session_id {
     type: number
