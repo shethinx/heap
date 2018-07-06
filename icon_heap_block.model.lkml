@@ -9,22 +9,22 @@ include: "*.view"
 include: "*.dashboard"
 
 explore: all_events {
-  join: users {
+  join: users_icon {
     type: left_outer
-    sql_on: ${all_events.user_id} = ${users.user_id} ;;
+    sql_on: ${all_events.user_id} = ${users_icon.user_id} ;;
     relationship: many_to_one
   }
 
-  join: sessions {
+  join: sessions_icon {
     type: left_outer
-    sql_on: ${all_events.session_unique_id} = ${sessions.session_unique_id} ;;
+    sql_on: ${all_events.session_unique_id} = ${sessions_icon.session_unique_id} ;;
     relationship: many_to_one
   }
 
-  join: session_facts {
+  join: session_facts_icon {
     view_label: "Sessions"
     type: left_outer
-    sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
+    sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one
   }
 
