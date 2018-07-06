@@ -63,16 +63,16 @@ explore: sessions_icon {
 }
 
 explore: funnel_explorer_icon {
-  join: sessions {
+  join: sessions_icon {
     type: left_outer
-    sql_on: ${funnel_explorer_icon.session_unique_id} = ${sessions.session_unique_id} ;;
+    sql_on: ${funnel_explorer_icon.session_unique_id} = ${sessions_icon.session_unique_id} ;;
     relationship: one_to_one
   }
 
-  join: session_facts {
+  join: session_facts_icon {
     view_label: "Sessions"
     type: left_outer
-    sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
+    sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one
   }
 }
