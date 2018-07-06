@@ -47,6 +47,7 @@ view: funnel_explorer {
   }
 
   dimension_group: session {
+    hidden:  yes
     type: time
     sql: ${TABLE}.session_time ;;
     timeframes: [date, month, week, year]
