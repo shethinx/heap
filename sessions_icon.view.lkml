@@ -98,7 +98,7 @@ view: sessions_icon {
 
   dimension_group: session {
     type: time
-    timeframes: [time, date, week, month, hour_of_day, day_of_week_index]
+    timeframes: [time, date, week, month, year, hour_of_day, day_of_week_index]
     sql: ${TABLE}.time ;;
   }
 
