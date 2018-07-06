@@ -62,10 +62,10 @@ explore: sessions_icon {
 
 }
 
-explore: funnel_explorer {
+explore: funnel_explorer_icon {
   join: sessions {
     type: left_outer
-    sql_on: ${funnel_explorer.session_unique_id} = ${sessions.session_unique_id} ;;
+    sql_on: ${funnel_explorer_icon.session_unique_id} = ${sessions.session_unique_id} ;;
     relationship: one_to_one
   }
 
