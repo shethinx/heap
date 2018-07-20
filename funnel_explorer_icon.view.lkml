@@ -29,17 +29,17 @@ view: funnel_explorer_icon {
 
   filter: event1 {
     suggest_explore: all_events
-    suggest_dimension: all_events.event_name
+    suggest_dimension: all_events.event_table_name
   }
 
   filter: event2 {
     suggest_explore: all_events
-    suggest_dimension: all_events.event_name
+    suggest_dimension: all_events.event_table_name
   }
 
   filter: event3 {
     suggest_explore: all_events
-    suggest_dimension: all_events.event_name
+    suggest_dimension: all_events.event_table_name
   }
 
   filter: event_time {
