@@ -80,13 +80,6 @@ view: sessions_icon {
     sql: split_part(${referrer},'/',3) ;;
   }
 
-  dimension: referrer_domain_mapped {
-    sql: CASE WHEN ${referrer_domain} like '%facebook%' THEN 'facebook' WHEN ${referrer_domain} like '%google%' THEN 'google' ELSE ${referrer_domain} END ;;
-    html: {{ linked_value }}
-      <a href="/dashboards/heap_block::referrer_dashboard?referrer_domain={{ value | encode_uri }}" target="_new">
-      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
-      ;;
-  }
 
   dimension: region {
     sql: ${TABLE}.region ;;
@@ -292,7 +285,7 @@ view: sessions_icon {
             THEN 'Other Channel'
           when ${TABLE}.referrer IS NULL
           or ${TABLE}.referrer ILIKE '%android-app%'
-          or ${TABLE}.referrer ILIKE '%shethinx.com%'
+          or ${TABLE}.referrer ILIKE '%iconundies.com%'
             THEN 'Direct'
           when ${TABLE}.referrer IS NOT NULL
             THEN 'Other Referral'
