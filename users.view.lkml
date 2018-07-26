@@ -17,6 +17,11 @@ view: users {
     sql: ${TABLE}.joindate ;;
   }
 
+  dimension: pps_initial_referrer {
+    type: string
+    sql: ${TABLE}.pps_initial_referrer ;;
+  }
+
   measure: count {
     hidden: yes
     type: count

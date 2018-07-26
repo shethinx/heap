@@ -58,6 +58,8 @@ explore: sessions {
 
 }
 
+explore: pps_initial_referrer {}
+
 explore: funnel_explorer {
   join: sessions {
     type: left_outer
