@@ -62,7 +62,6 @@ view: pps_initial_referrer {
 
   measure: average_touches_to_convert {
     type: average
-    value_format: "#.####"
     sql: ${TABLE}.session_sequence_number ;;
   }
 
