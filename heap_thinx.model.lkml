@@ -7,7 +7,6 @@ include: "*.view"
 
 
 # include all the dashboards
-include: "*.dashboard"
 
 explore: all_events {
   join: users {
