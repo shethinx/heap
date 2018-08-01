@@ -5,6 +5,7 @@ label: "Thinx Heap Block"
 # include all the views
 include: "*.view"
 
+
 # include all the dashboards
 include: "*.dashboard"
 
@@ -59,6 +60,8 @@ explore: sessions {
 }
 
 explore: pps_initial_referrer {}
+
+explore: heap_attribution_mg {}
 
 explore: funnel_explorer {
   join: sessions {
