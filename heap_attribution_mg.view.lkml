@@ -153,6 +153,7 @@ view: heap_attribution_mg {
           when ${TABLE}.last_touch_referrer IS NULL
           or ${TABLE}.last_touch_referrer ILIKE '%android-app%'
           or ${TABLE}.last_touch_referrer ILIKE '%shethinx.com%'
+          or ${TABLE}.last_touch_referrer ILIKE '%iconundies.com%'
             THEN 'Direct'
           when ${TABLE}.last_touch_referrer IS NOT NULL
             THEN 'Other Referral'
@@ -228,6 +229,7 @@ view: heap_attribution_mg {
           when ${TABLE}.referrer IS NULL
           or ${TABLE}.referrer ILIKE '%android-app%'
           or ${TABLE}.referrer ILIKE '%shethinx.com%'
+          or ${TABLE}.referrer ILIKE '%iconundies.com%'
             THEN 'Direct'
           when ${TABLE}.referrer IS NOT NULL
             THEN 'Other Referral'
