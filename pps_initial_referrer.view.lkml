@@ -152,7 +152,7 @@ view: pps_initial_referrer {
           when ${TABLE}.utm_source ILIKE '%Friendbuy%'
             THEN 'Refer-A-Friend'
           when ${TABLE}.utm_medium IS NOT NULL
-            THEN 'Other Channel'
+            THEN 'Unknown Channel'
           when ${TABLE}.referrer IS NULL
           or ${TABLE}.referrer ILIKE '%android-app%'
           or ${TABLE}.referrer ILIKE '%shethinx.com%'
