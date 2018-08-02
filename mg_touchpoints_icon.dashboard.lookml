@@ -233,8 +233,8 @@
     col: 0
     width: 24
     height: 9
-  - title: Average Time to Convert by First Touch Marketing Channel
-    name: Average Time to Convert by First Touch Marketing Channel
+  - title: Average Days to Convert by First Touch Marketing Channel
+    name: Average Days to Convert by First Touch Marketing Channel
     model: heap_icon
     explore: heap_attribution_mg
     type: looker_column
