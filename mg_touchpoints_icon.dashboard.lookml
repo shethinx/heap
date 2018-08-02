@@ -13,7 +13,7 @@
     sorts:
     - heap_attribution_mg.first_touch_marketing_channel
     limit: 500
-    value_labels: legend
+    value_labels: labels
     label_type: labPer
     stacking: ''
     show_value_labels: false
@@ -42,7 +42,7 @@
     totals_color: "#808080"
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 6
     col: 0
     width: 11
@@ -58,7 +58,7 @@
     sorts:
     - heap_attribution_mg.last_touch_marketing_channel
     limit: 500
-    value_labels: legend
+    value_labels: labels
     label_type: labPer
     stacking: ''
     show_value_labels: false
@@ -87,7 +87,7 @@
     totals_color: "#808080"
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 6
     col: 13
     width: 11
@@ -134,7 +134,7 @@
     totals_color: "#808080"
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 0
     col: 4
     width: 8
@@ -181,7 +181,7 @@
     totals_color: "#808080"
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 0
     col: 12
     width: 8
@@ -228,7 +228,7 @@
     interpolation: linear
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 14
     col: 0
     width: 24
@@ -275,7 +275,7 @@
     interpolation: linear
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 23
     col: 0
     width: 24
@@ -324,7 +324,7 @@
     interpolation: linear
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 41
     col: 0
     width: 24
@@ -373,14 +373,14 @@
     interpolation: linear
     series_types: {}
     listen:
-      Order Date Filter Icon: heap_attribution_mg.order_time_year
+      Order Date Filter: heap_attribution_mg.order_time_year
     row: 32
     col: 0
     width: 24
     height: 9
   filters:
-  - name: Order Date Filter Icon
-    title: Order Date Filter Icon
+  - name: Order Date Filter
+    title: Order Date Filter
     type: field_filter
     default_value: 1 years
     allow_multiple_values: true
