@@ -137,6 +137,7 @@ view: icon_attribution_webhook {
           or ${TABLE}.last_touch_referrer ILIKE '%pinterest.com%'
           or ${TABLE}.last_touch_referrer ILIKE '%snapchat.com%'
           or ${TABLE}.last_touch_referrer ILIKE '%youtube.com%'
+          or ${TABLE}.last_touch_referrer ILIKE '%facebook.com%'
           ) and ${TABLE}.last_touch_utm_medium IS NOT NULL
           or ${TABLE}.last_touch_landing_page ILIKE '%fbaid=%'
           or ${TABLE}.last_touch_landing_page ILIKE '%licid=%'
@@ -157,6 +158,7 @@ view: icon_attribution_webhook {
           or ${TABLE}.last_touch_referrer ILIKE '%pinterest.com%'
           or ${TABLE}.last_touch_referrer ILIKE '%snapchat.com%'
           or ${TABLE}.last_touch_referrer ILIKE '%youtube.com%'
+          or ${TABLE}.last_touch_referrer ILIKE '%facebook.com%'
             THEN 'Organic Social'
           when ${TABLE}.last_touch_utm_source ILIKE '%email%'
             THEN 'Email'
@@ -213,6 +215,7 @@ view: icon_attribution_webhook {
           or ${TABLE}.referrer ILIKE '%pinterest.com%'
           or ${TABLE}.referrer ILIKE '%snapchat.com%'
           or ${TABLE}.referrer ILIKE '%youtube.com%'
+          or ${TABLE}.referrer ILIKE '%facebook.com%'
           ) and ${TABLE}.utm_medium IS NOT NULL
           or ${TABLE}.landing_page ILIKE '%fbaid=%'
           or ${TABLE}.landing_page ILIKE '%licid=%'
@@ -233,6 +236,7 @@ view: icon_attribution_webhook {
           or ${TABLE}.referrer ILIKE '%pinterest.com%'
           or ${TABLE}.referrer ILIKE '%snapchat.com%'
           or ${TABLE}.referrer ILIKE '%youtube.com%'
+          or ${TABLE}.referrer ILIKE '%facebook.com%'
             THEN 'Organic Social'
           when ${TABLE}.utm_source ILIKE '%email%'
             THEN 'Email'
