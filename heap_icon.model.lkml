@@ -7,7 +7,7 @@ label: "Icon Heap"
 include: "*.view"
 
 # include all the dashboards
-include: "*.dashboard"
+include: "mg_touchpoints_icon.dashboard"
 
 explore: all_events {
   join: users_icon {

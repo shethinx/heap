@@ -75,7 +75,7 @@ view: pps_answers_conversion {
     sql: ${TABLE}.session_sequence_number ;;
   }
 
-  measure: median_time_to_convert {
+  measure: average_time_to_convert {
     type: median
     sql: ${TABLE}.time_between_first_and_last_touch ;;
   }
