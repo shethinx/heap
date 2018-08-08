@@ -8,6 +8,7 @@ include: "*.view"
 
 # include all the dashboards
 include: "mg_touchpoints_icon.dashboard"
+include: "self_reported_icon.dashboard"
 
 explore: all_events {
   join: users_icon {
