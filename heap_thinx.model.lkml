@@ -62,6 +62,8 @@ explore: pps_initial_referrer {}
 
 explore: heap_attribution_mg {}
 
+explore: pps_answers_conversion {}
+
 explore: funnel_explorer {
   join: sessions {
     type: left_outer

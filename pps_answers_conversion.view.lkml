@@ -66,7 +66,7 @@ view: pps_answers_conversion {
   }
 
   measure: average_touches_to_convert {
-    type: average
+    type: median
     sql: ${TABLE}.session_sequence_number ;;
   }
 
@@ -238,11 +238,6 @@ view: pps_answers_conversion {
   }
 
 
-  dimension: q4_attribution {
-    label:"How did you first hear about THINX?"
-    type: string
-    sql: ${TABLE}.q4_attribution ;;
-  }
 
   dimension: q5_how_long_to_buy {
     label: "How long did you take to consider buying THINX?"

@@ -63,6 +63,8 @@ explore: sessions_icon {
 
 }
 
+explore: icon_attribution_webhook {}
+
 explore: heap_attribution_mg {}
 
 explore: funnel_explorer_icon {

@@ -1,13 +1,23 @@
-view: heap_attribution_mg {
+view: icon_attribution_webhook {
   derived_table: {
     sql:
     with users as(
     select
     user_id,
     total_spent,
-    orders_count
-    from {{ _model._name }}.users
+    orders_count,
+    email
+    from heap_icon.users
     where total_spent > 0
+    ),
+
+    self_reported as(
+    select user_id,
+    total_spent,
+    orders_count,
+    "heard-from" as self_reported
+    from users
+    join post_purchase_webhook_new.data on users.email = data."customer-email"
     ),
 
     all_sessions as(
@@ -20,7 +30,7 @@ view: heap_attribution_mg {
     sessions.utm_source,
     sessions.utm_medium,
     row_number() over( partition by sessions.user_id order by min(sessions.time)) as session_sequence_number
-    from users left join {{ _model._name }}.sessions as sessions on sessions.user_id = users.user_id
+    from users left join heap_icon.sessions as sessions on sessions.user_id = users.user_id
     group by 1,2,3,4,5,6,7),
 
     first_session as(
@@ -49,15 +59,14 @@ view: heap_attribution_mg {
     first_session.time as first_touch_time,
     datediff('day', first_touch_time, order_time) as time_between_first_and_last_touch,
     a.session_sequence_number
-    from {{ _model._name }}.order_completed
+    from heap_icon.order_completed
     left join all_sessions as a on order_completed.session_id = a.session_id
     left join first_session on order_completed.user_id = first_session.user_id)
-
 
     select
     distinct
     *
-    From users join order_completed using(user_id)
+    From self_reported join order_completed using(user_id)
     ;;
   }
 
@@ -83,6 +92,11 @@ view: heap_attribution_mg {
   dimension_group: order_time {
     type: time
     sql: ${TABLE}.order_time ;;
+  }
+
+  dimension: self_reported_attribution {
+    type: string
+    sql: ${TABLE}.self_reported ;;
   }
 
   dimension: last_touch_marketing_channel {
