@@ -65,6 +65,11 @@ view: pps_answers_conversion {
     type: count
   }
 
+  dimension: self_reported_attribution {
+    type: string
+    sql: ${TABLE}.pps_initial_referrer ;;
+  }
+
   measure: average_touches_to_convert {
     type: median
     sql: ${TABLE}.session_sequence_number ;;
