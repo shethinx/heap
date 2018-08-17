@@ -7,7 +7,8 @@ label: "Icon Heap"
 include: "*.view"
 
 # include all the dashboards
-include: "*.dashboard"
+include: "mg_touchpoints_icon.dashboard"
+include: "self_reported_icon.dashboard"
 
 explore: all_events {
   join: users_icon {
@@ -62,6 +63,8 @@ explore: sessions_icon {
   }
 
 }
+
+explore: icon_attribution_webhook {}
 
 explore: heap_attribution_mg {}
 
