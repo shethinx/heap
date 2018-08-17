@@ -7,7 +7,7 @@ include: "*.view"
 
 
 # include all the dashboards
-# include: "self_reported_thinx.dashboard"
+include: "self_reported_thinx.dashboard"
 # include: "sessions_overview.dashboard"
 # include: "referrer_dashboard.dashboard"
 # include: "funnel_explorer.dashboard"
