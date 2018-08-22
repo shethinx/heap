@@ -5,7 +5,8 @@ view: heap_attribution_mg {
     select
     user_id,
     total_spent,
-    orders_count
+    orders_count,
+    joindate
     from {{ _model._name }}.users
     where total_spent > 0
     ),
@@ -19,9 +20,10 @@ view: heap_attribution_mg {
     sessions.landing_page,
     sessions.utm_source,
     sessions.utm_medium,
-    row_number() over( partition by sessions.user_id order by min(sessions.time)) as session_sequence_number
+    joindate,
+    row_number() over( partition by sessions.user_id order by sessions.time asc) as session_sequence_number
     from users left join {{ _model._name }}.sessions as sessions on sessions.user_id = users.user_id
-    group by 1,2,3,4,5,6,7),
+    group by 1,2,3,4,5,6,7,8),
 
     first_session as(
     select
@@ -47,7 +49,7 @@ view: heap_attribution_mg {
     first_session.utm_source as utm_source,
     first_session.utm_medium as utm_medium,
     first_session.time as first_touch_time,
-    datediff('day', first_touch_time, order_time) as time_between_first_and_last_touch,
+    datediff('day', joindate, order_time) as time_between_first_and_last_touch,
     a.session_sequence_number
     from {{ _model._name }}.order_completed
     left join all_sessions as a on order_completed.session_id = a.session_id
@@ -58,6 +60,7 @@ view: heap_attribution_mg {
     distinct
     *
     From users join order_completed using(user_id)
+    where session_sequence_number is not null
     ;;
   }
 
@@ -72,6 +75,11 @@ view: heap_attribution_mg {
 
   measure: average_time_to_convert {
     type: median
+    sql: ${TABLE}.time_between_first_and_last_touch ;;
+  }
+
+  dimension: days_to_convert {
+    type: number
     sql: ${TABLE}.time_between_first_and_last_touch ;;
   }
 
