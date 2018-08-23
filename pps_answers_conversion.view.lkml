@@ -6,7 +6,8 @@ view: pps_answers_conversion {
     user_id,
     pps_initial_referrer,
     webhook_initial_referrer,
-    email
+    email,
+    joindate
     from heap_thinx.users
     where pps_initial_referrer is not null),
 
@@ -23,9 +24,10 @@ view: pps_answers_conversion {
     sessions.landing_page,
     sessions.utm_source,
     sessions.utm_medium,
+    joindate,
     row_number() over( partition by sessions.user_id order by min(sessions.time)) as session_sequence_number
     from pps left join heap_thinx.sessions on sessions.user_id = pps.user_id
-    group by 1,2,3,4,5,6,7),
+    group by 1,2,3,4,5,6,7,8),
 
     first_session_pps as(
     select
@@ -48,7 +50,7 @@ view: pps_answers_conversion {
     first_session_pps.utm_source as utm_source,
     first_session_pps.utm_medium as utm_medium,
     first_session_pps.time as first_touch_time,
-    datediff('day', first_touch_time, order_time) as time_between_first_and_last_touch,
+    datediff('day', joindate, order_time) as time_between_first_and_last_touch,
     a.session_sequence_number
     from heap_thinx.order_completed left join all_sessions_pps as a on order_completed.session_id = a.session_id
     left join first_session_pps on order_completed.user_id = first_session_pps.user_id)
