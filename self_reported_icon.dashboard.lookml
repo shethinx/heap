@@ -1,5 +1,5 @@
 - dashboard: mg__icon_touchpoints_pps
-  title: MG - ICON Touchpoints - PPS
+  title: MG - ICON Touchpoints - Webhook
   layout: newspaper
   elements:
   - title: Distribution of users across First Touch marketing Channel
