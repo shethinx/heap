@@ -6,7 +6,8 @@ view: icon_attribution_webhook {
     user_id,
     total_spent,
     orders_count,
-    email
+    email,
+    joindate
     from heap_icon.users
     where total_spent > 0
     ),
@@ -15,7 +16,8 @@ view: icon_attribution_webhook {
     select user_id,
     total_spent,
     orders_count,
-    "heard-from" as self_reported
+    "heard-from" as self_reported,
+    joindate
     from users
     join post_purchase_webhook_new.data on users.email = data."customer-email"
     ),
@@ -29,9 +31,10 @@ view: icon_attribution_webhook {
     sessions.landing_page,
     sessions.utm_source,
     sessions.utm_medium,
+    joindate,
     row_number() over( partition by sessions.user_id order by min(sessions.time)) as session_sequence_number
     from users left join heap_icon.sessions as sessions on sessions.user_id = users.user_id
-    group by 1,2,3,4,5,6,7),
+    group by 1,2,3,4,5,6,7,8),
 
     first_session as(
     select
@@ -57,7 +60,7 @@ view: icon_attribution_webhook {
     first_session.utm_source as utm_source,
     first_session.utm_medium as utm_medium,
     first_session.time as first_touch_time,
-    datediff('day', first_touch_time, order_time) as time_between_first_and_last_touch,
+    datediff('day', joindate, order_time) as time_between_first_and_last_touch,
     a.session_sequence_number
     from heap_icon.order_completed
     left join all_sessions as a on order_completed.session_id = a.session_id
