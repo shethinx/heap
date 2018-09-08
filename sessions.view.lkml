@@ -1,5 +1,4 @@
 view: sessions {
-  label: "Sessions Thinx"
   sql_table_name: heap_thinx.sessions ;;
 
   dimension: session_id {
