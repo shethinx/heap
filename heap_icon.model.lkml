@@ -8,16 +8,16 @@ include: "*.view"
 
 # include all the dashboards
 
-explore: all_events {
+explore: all_events_icon {
   join: users_icon {
     type: left_outer
-    sql_on: ${all_events.user_id} = ${users_icon.user_id} ;;
+    sql_on: ${all_events_icon.user_id} = ${users_icon.user_id} ;;
     relationship: many_to_one
   }
 
   join: sessions_icon {
     type: left_outer
-    sql_on: ${all_events.session_unique_id} = ${sessions_icon.session_unique_id} ;;
+    sql_on: ${all_events_icon.session_unique_id} = ${sessions_icon.session_unique_id} ;;
     relationship: many_to_one
   }
 
@@ -28,15 +28,12 @@ explore: all_events {
     relationship: one_to_one
   }
 
-  join: event_flow {
-    sql_on: ${all_events.unique_event_id} = ${event_flow.unique_event_id} ;;
+  join: event_flow_icon {
+    sql_on: ${all_events_icon.unique_event_id} = ${event_flow_icon.unique_event_id} ;;
     relationship: one_to_one
   }
 }
 
-explore: sessions {
-  label: "Do Not Use"
-  }
 
 explore: sessions_icon {
   label: "Icon Sessions"
@@ -46,17 +43,17 @@ explore: sessions_icon {
     relationship: many_to_one
   }
 
-  join: user_facts {
+  join: user_facts_icon {
     view_label: "Users"
     type: left_outer
-    sql_on: ${sessions_icon.user_id} = ${user_facts.user_id} ;;
+    sql_on: ${sessions_icon.user_id} = ${user_facts_icon.user_id} ;;
     relationship: many_to_one
   }
 
-  join: session_facts {
+  join: session_facts_icon {
     view_label: "Sessions"
     type: left_outer
-    sql_on: ${sessions_icon.session_unique_id} = ${session_facts.session_unique_id} ;;
+    sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one
   }
 
