@@ -22,7 +22,6 @@ explore: all_events_icon {
   }
 
   join: session_facts_icon {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one
@@ -36,7 +35,6 @@ explore: all_events_icon {
 
 
 explore: sessions_icon {
-  label: "Icon Sessions"
   join: users {
     type: left_outer
     sql_on: ${sessions_icon.user_id} = ${users.user_id} ;;
@@ -44,14 +42,12 @@ explore: sessions_icon {
   }
 
   join: user_facts_icon {
-    view_label: "Users"
     type: left_outer
     sql_on: ${sessions_icon.user_id} = ${user_facts_icon.user_id} ;;
     relationship: many_to_one
   }
 
   join: session_facts_icon {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one
@@ -68,7 +64,6 @@ explore: funnel_explorer_icon {
   }
 
   join: session_facts_icon {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions_icon.session_unique_id} = ${session_facts_icon.session_unique_id} ;;
     relationship: one_to_one

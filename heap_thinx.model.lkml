@@ -26,7 +26,6 @@ explore: all_events {
   }
 
   join: session_facts {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
     relationship: one_to_one
@@ -39,7 +38,6 @@ explore: all_events {
 }
 
 explore: sessions {
-  label: "Sessions Thinx"
   join: users {
     type: left_outer
     sql_on: ${sessions.user_id} = ${users.user_id} ;;
@@ -47,14 +45,12 @@ explore: sessions {
   }
 
   join: user_facts {
-    view_label: "Users"
     type: left_outer
     sql_on: ${sessions.user_id} = ${user_facts.user_id} ;;
     relationship: many_to_one
   }
 
   join: session_facts {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
     relationship: one_to_one
@@ -71,7 +67,6 @@ explore: funnel_explorer {
   }
 
   join: session_facts {
-    view_label: "Sessions"
     type: left_outer
     sql_on: ${sessions.session_unique_id} = ${session_facts.session_unique_id} ;;
     relationship: one_to_one
