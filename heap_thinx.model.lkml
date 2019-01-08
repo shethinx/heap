@@ -11,18 +11,8 @@ include: "*.view"
 # include: "referrer_dashboard.dashboard"
 # include: "funnel_explorer.dashboard"
 
-access_grant: marketing {
-  user_attribute: department
-  allowed_values: ["marketing"]
-}
-
-access_grant: analytics {
-  user_attribute: department
-  allowed_values: ["analytics"]
-}
 
 explore: all_events {
-  required_access_grants: [marketing, analytics]
   join: users {
     type: left_outer
     sql_on: ${all_events.user_id} = ${users.user_id} ;;
@@ -48,7 +38,6 @@ explore: all_events {
 }
 
 explore: sessions {
-  required_access_grants: [marketing, analytics]
   join: users {
     type: left_outer
     sql_on: ${sessions.user_id} = ${users.user_id} ;;
@@ -71,7 +60,6 @@ explore: sessions {
 
 
 explore: funnel_explorer {
-  required_access_grants: [marketing, analytics]
   join: sessions {
     type: left_outer
     sql_on: ${funnel_explorer.session_unique_id} = ${sessions.session_unique_id} ;;
