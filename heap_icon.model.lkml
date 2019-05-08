@@ -7,10 +7,14 @@ label: "Icon Heap"
 include: "*.view"
 
 # include all the dashboards
-
+access_grant: analytics {
+  user_attribute: department
+  allowed_values: ["analytics"]
+}
 
 
 explore: all_events_icon {
+  required_access_grants: [analytics]
   join: users_icon {
     type: left_outer
     sql_on: ${all_events_icon.user_id} = ${users_icon.user_id} ;;
@@ -37,6 +41,7 @@ explore: all_events_icon {
 
 
 explore: sessions_icon {
+  required_access_grants: [analytics]
   join: users {
     type: left_outer
     sql_on: ${sessions_icon.user_id} = ${users.user_id} ;;
@@ -59,6 +64,7 @@ explore: sessions_icon {
 
 
 explore: funnel_explorer_icon {
+  required_access_grants: [analytics]
   join: sessions_icon {
     type: left_outer
     sql_on: ${funnel_explorer_icon.session_unique_id} = ${sessions_icon.session_unique_id} ;;
