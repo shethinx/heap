@@ -12,7 +12,7 @@ include: "*.view"
 # include: "funnel_explorer.dashboard"
 access_grant: executive {
   user_attribute: department
-  allowed_values: ["executive"]
+  allowed_values: ["executive", "analytics"]
 }
 
 explore: all_events {

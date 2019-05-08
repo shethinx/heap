@@ -9,7 +9,7 @@ include: "*.view"
 # include all the dashboards
 access_grant: executive {
   user_attribute: department
-  allowed_values: ["executive"]
+  allowed_values: ["executive", "analytics"]
 }
 
 
