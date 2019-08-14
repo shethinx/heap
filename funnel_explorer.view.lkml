@@ -1,7 +1,17 @@
 view: funnel_explorer {
   # Or, you could make this view a derived table, like this:
   derived_table: {
-    sql: SELECT all_events.session_id || '-' || all_events.user_id as session_unique_id
+    sql:
+
+    with heap_shopify_order_mapping as  ( SELECT order_number, listagg(distinct case when vendor = 'Thinx Underwear' then 'THINX' when vendor = 'MAS' then 'Speax'  else vendor end,',') as included_brands FROM thinx_shopify.orders
+      LEFT JOIN orders__line_items ON
+      orders__line_items._sdc_source_key_id=orders.id
+      group by 1),
+
+  unique_event_ids as (select event_id from heap_thinx.order_completed as oc join heap_shopify_order_mapping  as om on oc.order_id = om.order_number
+      where included_brands like '%'|| {{ brand._parameter_value }} || '%'  )
+
+    SELECT all_events.session_id || '-' || all_events.user_id as session_unique_id
         , MIN(all_events.time) as session_time
         , MIN(
             CASE WHEN
@@ -22,7 +32,8 @@ view: funnel_explorer {
               ELSE NULL END
             ) as event3_time
       FROM heap_thinx.all_events as all_events
-      WHERE {% condition session_date %} all_events.time {% endcondition %}
+      WHERE {% condition sessions.session_date %} all_events.time {% endcondition %}
+      and case when event_table_name = 'order_completed' then event_id in (select event_id from unique_event_ids) else 1=1 end
       GROUP BY 1
        ;;
   }
@@ -44,6 +55,19 @@ view: funnel_explorer {
 
   filter: event_time {
     type: date_time
+  }
+
+  parameter: brand {
+    type: string
+    allowed_value: {
+      value: "THINX"
+    }
+    allowed_value: {
+      value: "Speax"
+    }
+    allowed_value: {
+      value: "BTWN"
+    }
   }
 
   dimension_group: session {

@@ -65,6 +65,11 @@ explore: sessions {
 
 explore: funnel_explorer {
   required_access_grants: [executive]
+  always_filter: {
+    filters: {
+      field: brand
+    }
+  }
   join: sessions {
     type: left_outer
     sql_on: ${funnel_explorer.session_unique_id} = ${sessions.session_unique_id} ;;
