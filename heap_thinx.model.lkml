@@ -69,6 +69,10 @@ explore: funnel_explorer {
     filters: {
       field: brand
     }
+      filters: {
+        field: all_order_completes_or_brand_specific_conversions
+        value: "ALL"
+      }
   }
   join: sessions {
     type: left_outer

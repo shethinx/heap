@@ -11,6 +11,12 @@ view: funnel_explorer {
   unique_event_ids as (select event_id from heap_thinx.order_completed as oc join heap_shopify_order_mapping  as om on oc.order_id = om.order_number
       where included_brands like '%'|| {{ brand._parameter_value }} || '%'  )
 
+    unique_session_ids as (select distinct session_id from heap_thinx.all_events
+      where  {% if brand._parameter_value == "'THINX'" %} event_table_name = 'thinx_pageviews_t_view_any_thinx_page'
+      {% elsif brand._parameter_value == "'Speax'" %} event_table_name = 'speax_pageviews_s_view_any_speax_page'
+      {% else %} event_table_name = 'btwn_pageviews_b_view_any_btwn_page' {% endif %}
+      )
+
     SELECT all_events.session_id || '-' || all_events.user_id as session_unique_id
         , MIN(all_events.time) as session_time
         , MIN(
@@ -33,7 +39,13 @@ view: funnel_explorer {
             ) as event3_time
       FROM heap_thinx.all_events as all_events
       WHERE {% condition sessions.session_date %} all_events.time {% endcondition %}
-      and case when event_table_name = 'order_completed' then event_id in (select event_id from unique_event_ids) else 1=1 end
+      and
+      {% if all_order_completes_or_brand_specific_conversions._parameter_value == "'ALL'" %}
+       1=1
+      {% else %}  case when event_table_name = 'order_completed' then event_id in (select event_id from unique_event_ids) else 1=1 end {% endif %}
+      {% if all_page_views_or_brand_specific_conversions._parameter_value == "'ALL'" %}
+       1=1
+      {% else %}  case when event_table_name = 'pageviews' then session_id in (select session_id from unique_session_ids) else 1=1 end {% endif %}
       GROUP BY 1
        ;;
   }
@@ -67,6 +79,29 @@ view: funnel_explorer {
     }
     allowed_value: {
       value: "BTWN"
+    }
+  }
+
+  parameter: all_order_completes_or_brand_specific_conversions {
+    description: "Selecting ALL indicates all orders placed with ANY of the three brands will be used. A brand specific selection will filter the orders to only include orders that contain the brand as selected in the Brand filter."
+    type: string
+    allowed_value: {
+      value: "Brand Specific"
+      }
+    allowed_value: {
+      value: "ALL"
+    }
+  }
+
+  parameter: all_page_views_or_brand_specific_conversions {
+    description: "Use this in conjuntion with the event type pageviews. Selecting ALL indicates every session will be considered regardless of the individual brand pages visited. A brand specific selection will filter the session to to
+    only sessions that contain at least 1 page visited from the brand as selected in the Brand filter. This has the same effect as explicitly selecting: btwn_pageviews_b_view_any_btwn_page, speax_pageviews_s_view_any_speax_page or  thinx_pageviews_t_view_any_thinx_page,  "
+    type: string
+    allowed_value: {
+      value: "Brand Specific"
+    }
+    allowed_value: {
+      value: "ALL"
     }
   }
 
