@@ -73,6 +73,10 @@ explore: funnel_explorer {
         field: all_order_completes_or_brand_specific_conversions
         value: "ALL"
       }
+    filters: {
+      field: all_page_views_or_brand_specific_conversions
+      value: "ALL"
+    }
   }
   join: sessions {
     type: left_outer

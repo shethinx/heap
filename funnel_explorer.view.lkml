@@ -9,7 +9,7 @@ view: funnel_explorer {
       group by 1),
 
   unique_event_ids as (select event_id from heap_thinx.order_completed as oc join heap_shopify_order_mapping  as om on oc.order_id = om.order_number
-      where included_brands like '%'|| {{ brand._parameter_value }} || '%'  )
+      where included_brands like '%'|| {{ brand._parameter_value }} || '%'  ),
 
     unique_session_ids as (select distinct session_id from heap_thinx.all_events
       where  {% if brand._parameter_value == "'THINX'" %} event_table_name = 'thinx_pageviews_t_view_any_thinx_page'
@@ -43,6 +43,7 @@ view: funnel_explorer {
       {% if all_order_completes_or_brand_specific_conversions._parameter_value == "'ALL'" %}
        1=1
       {% else %}  case when event_table_name = 'order_completed' then event_id in (select event_id from unique_event_ids) else 1=1 end {% endif %}
+      and
       {% if all_page_views_or_brand_specific_conversions._parameter_value == "'ALL'" %}
        1=1
       {% else %}  case when event_table_name = 'pageviews' then session_id in (select session_id from unique_session_ids) else 1=1 end {% endif %}
