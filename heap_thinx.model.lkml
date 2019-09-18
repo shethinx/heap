@@ -64,7 +64,6 @@ explore: sessions {
 }
 
 explore: funnel_explorer {
-  required_access_grants: [executive]
   always_filter: {
     filters: {
       field: brand
