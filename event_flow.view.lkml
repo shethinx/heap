@@ -1,8 +1,8 @@
 view: event_flow {
   derived_table: {
-    sql_trigger_value: select current_date ;;
-    sortkeys: ["sequence_number_for_event_flow"]
-    distribution: "unique_event_id"
+    #sql_trigger_value: select current_date ;;
+    #sortkeys: ["sequence_number_for_event_flow"]
+    #distribution: "unique_event_id"
     sql: select      a.unique_event_id
             , a.event_id
             , a.session_id
