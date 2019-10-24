@@ -2,22 +2,45 @@ view: funnel_explorer {
   # Or, you could make this view a derived table, like this:
   derived_table: {
     sql:
+    with
+      heap_shopify_order_mapping as  (
+        SELECT
+          o.order_number
+          ,listagg(distinct case when oli.vendor = 'Thinx Underwear' then 'THINX' when vendor = 'MAS' then 'Speax'  else oli.vendor end,',')
+            WITHIN GROUP (ORDER BY case when oli.vendor = 'Thinx Underwear' then 'THINX' when vendor = 'MAS' then 'Speax'  else oli.vendor end)
+              as included_brands
+        FROM thinx_shopify.orders as o
+          LEFT JOIN orders__line_items  as oli
+            ON o.id = oli._sdc_source_key_id
+        GROUP BY 1
+      ),
 
-    with heap_shopify_order_mapping as  ( SELECT order_number, listagg(distinct case when vendor = 'Thinx Underwear' then 'THINX' when vendor = 'MAS' then 'Speax'  else vendor end,',') as included_brands FROM thinx_shopify.orders
-      LEFT JOIN orders__line_items ON
-      orders__line_items._sdc_source_key_id=orders.id
-      group by 1),
+      unique_event_ids as (
+        select event_id
+        from heap_thinx.order_completed as oc
+          join heap_shopify_order_mapping  as om
+            on oc.order_id = om.order_number
+        where
+          {% if brand._parameter_value == "'ALL'" %} 1 = 1
+          {% else %} om.included_brands = {{ brand._parameter_value }} {% endif %}
+        ),
 
-  unique_event_ids as (select event_id from heap_thinx.order_completed as oc join heap_shopify_order_mapping  as om on oc.order_id = om.order_number
-      where included_brands like '%'|| {{ brand._parameter_value }} || '%'  ),
-
-    unique_session_ids as (select distinct session_id from heap_thinx.all_events
-      where  {% if brand._parameter_value == "'THINX'" %} event_table_name = 'thinx_pageviews_t_view_any_thinx_page'
-      {% elsif brand._parameter_value == "'Speax'" %} event_table_name = 'speax_pageviews_s_view_any_speax_page'
-      {% else %} event_table_name = 'btwn_pageviews_b_view_any_btwn_page' {% endif %}
-      )
+      unique_session_ids as (
+        select session_id
+        from heap_thinx.all_events
+        where
+          {% if brand._parameter_value == "'THINX'" %} event_table_name = 'thinx_pageviews_t_view_any_thinx_page'
+          {% elsif brand._parameter_value == "'Speax'" %} event_table_name = 'speax_pageviews_s_view_any_speax_page'
+          {% elsif brand._parameter_value == "'BTWN'" %} event_table_name = 'btwn_pageviews_b_view_any_btwn_page'
+          {% elsif brand._parameter_value == "'BTWN,THINX'" %} event_table_name IN ('btwn_pageviews_b_view_any_btwn_page','thinx_pageviews_t_view_any_thinx_page')
+          {% elsif brand._parameter_value == "'BTWN,Speax'" %} event_table_name IN ('btwn_pageviews_b_view_any_btwn_page','speax_pageviews_s_view_any_speax_page')
+          {% elsif brand._parameter_value == "'Speax,THINX'" %} event_table_name IN ('speax_pageviews_s_view_any_speax_page','thinx_pageviews_t_view_any_thinx_page')
+          {% else %} event_table_name IN ('thinx_pageviews_t_view_any_thinx_page','speax_pageviews_s_view_any_speax_page','btwn_pageviews_b_view_any_btwn_page') {% endif %}
+        group by 1
+        )
 
     SELECT all_events.session_id || '-' || all_events.user_id as session_unique_id
+        , CASE WHEN unique_session_ids.session_id is not null THEN 'BRAND' ELSE NULL END as brand_selected_row
         , MIN(all_events.time) as session_time
         , MIN(
             CASE WHEN
@@ -38,18 +61,33 @@ view: funnel_explorer {
               ELSE NULL END
             ) as event3_time
       FROM heap_thinx.all_events as all_events
+        LEFT JOIN unique_session_ids on (all_events.session_id = unique_session_ids.session_id)
       WHERE {% condition sessions.session_date %} all_events.time {% endcondition %}
       and
       {% if all_order_completes_or_brand_specific_conversions._parameter_value == "'ALL'" %}
        1=1
-      {% else %}  case when event_table_name = 'order_completed' then event_id in (select event_id from unique_event_ids) else 1=1 end {% endif %}
+      {% else %}  case when event_table_name = 'order_completed' then all_events.event_id in (select event_id from unique_event_ids) else 1=1 end {% endif %}
       and
       {% if all_page_views_or_brand_specific_conversions._parameter_value == "'ALL'" %}
        1=1
-      {% else %}  case when event_table_name = 'pageviews' then session_id in (select session_id from unique_session_ids) else 1=1 end {% endif %}
-      GROUP BY 1
+      {% else %}  case when event_table_name = 'pageviews' then all_events.session_id in (select session_id from unique_session_ids) else 1=1 end {% endif %}
+
+      GROUP BY 1,2
        ;;
   }
+
+#Commented out from original logic for else
+#  case when
+#
+      #   {% if brand._parameter_value == "'THINX'" %} event_table_name = 'thinx_pageviews_t_view_any_thinx_page'
+      #   {% elsif brand._parameter_value == "'Speax'" %} event_table_name = 'speax_pageviews_s_view_any_speax_page'
+      #   {% elsif brand._parameter_value == "'BTWN'" %} event_table_name = 'btwn_pageviews_b_view_any_btwn_page'
+      #   {% elsif brand._parameter_value == "'BTWN,THINX'" %} event_table_name IN ('btwn_pageviews_b_view_any_btwn_page','thinx_pageviews_t_view_any_thinx_page')
+      #   {% elsif brand._parameter_value == "'BTWN,Speax'" %} event_table_name IN ('btwn_pageviews_b_view_any_btwn_page','speax_pageviews_s_view_any_speax_page')
+      #   {% elsif brand._parameter_value == "'Speax,THINX'" %} event_table_name IN ('speax_pageviews_s_view_any_speax_page','thinx_pageviews_t_view_any_thinx_page')
+      #   {% else %} event_table_name IN ('thinx_pageviews_t_view_any_thinx_page','speax_pageviews_s_view_any_speax_page','btwn_pageviews_b_view_any_btwn_page') {% endif %}
+
+      # then session_id in (select session_id from unique_session_ids) else 1=1 end
 
   filter: event1 {
     suggest_explore: all_events
@@ -80,6 +118,18 @@ view: funnel_explorer {
     }
     allowed_value: {
       value: "BTWN"
+    }
+    allowed_value: {
+      value: "BTWN,THINX"
+    }
+    allowed_value: {
+      value: "BTWN,Speax"
+    }
+    allowed_value: {
+      value: "Speax,THINX"
+    }
+    allowed_value: {
+      value: "ALL"
     }
   }
 
@@ -167,7 +217,7 @@ view: funnel_explorer {
   measure: count_sessions_event12 {
     type: count_distinct
     sql: ${session_unique_id} ;;
-
+    drill_fields: [session_unique_id]
     filters: {
       field: event1_time
       value: "NOT NULL"
