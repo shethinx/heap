@@ -15,6 +15,12 @@ access_grant: executive {
   allowed_values: ["executive", "analytics"]
 }
 
+datagroup: heap_refresh {
+  sql_trigger:  SELECT FLOOR(EXTRACT(epoch from GETDATE()) / (6*60*60)) ;; #refresh every 6 hours
+}
+
+persist_with: heap_refresh
+
 explore: all_events {
   required_access_grants: [executive]
   join: users {
@@ -61,7 +67,15 @@ explore: sessions {
     relationship: one_to_one
   }
 
+  join: pageviews_summary {
+    type: left_outer
+    sql_on: ${sessions.session_id} = ${pageviews_summary.session_id} ;;
+    relationship: one_to_one
+  }
+
 }
+
+explore: pageviews {}
 
 explore: funnel_explorer {
   always_filter: {

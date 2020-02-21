@@ -2,6 +2,7 @@ view: sessions {
   sql_table_name: heap_thinx.sessions ;;
 
   dimension: session_id {
+    group_label: "Heap Information"
     type: number
     sql: ${TABLE}.session_id ;;
   }
@@ -14,73 +15,129 @@ view: sessions {
   }
 
   dimension: app_name {
+    group_label: "Environment Information"
     sql: ${TABLE}.app_name ;;
   }
 
   dimension: app_version {
+    group_label: "Environment Information"
     sql: ${TABLE}.app_version ;;
   }
 
   dimension: browser {
+    group_label: "Environment Information"
     sql: ${TABLE}.browser ;;
   }
 
   dimension: carrier {
+    group_label: "Environment Information"
     sql: ${TABLE}.carrier ;;
   }
 
   dimension: city {
+    group_label: "Location Information"
     sql: ${TABLE}.city ;;
   }
 
   dimension: country {
+    group_label: "Location Information"
     sql: CASE WHEN ${TABLE}.country = 'United States' THEN 'United States of America' ELSE ${TABLE}.country END ;;
   }
 
   dimension: device_type {
+    group_label: "Environment Information"
     sql: ${TABLE}.device_type ;;
   }
 
   dimension: event_id {
+    group_label: "Heap Information"
     type: number
     sql: ${TABLE}.event_id ;;
   }
 
   dimension: ip {
+    group_label: "Environment Information"
     type: string
     sql: ${TABLE}.ip ;;
   }
 
   dimension: landing_page {
-    sql: ${TABLE}.landing_page ;;
+    group_label: "URL Information"
+    sql: lower(${TABLE}.landing_page) ;;
+  }
+
+  dimension: landing_page_type {
+    group_label: "URL Information"
+    case: {
+      when: {
+        label: "Thinx"
+        sql: ${landing_page} like '%thinx%' OR ${landing_page} = 'www.shethinx.com/' ;;
+      }
+      when: {
+        label: "Speax"
+        sql: ${landing_page} like '%speax%' ;;
+      }
+      when: {
+        label: "BTWN"
+        sql: ${landing_page} like '%btwn%'  ;;
+      }
+      when: {
+        label: "Blogs"
+        sql: ${landing_page} like '%blogs%'  ;;
+      }
+      when: {
+        label: "Orders"
+        sql: ${landing_page} like '%orders%'  ;;
+      }
+      when: {
+        label: "Account"
+        sql: ${landing_page} like '%account%'  ;;
+      }
+      when: {
+        label: "Leader"
+        sql: ${landing_page} like '%leader%'  ;;
+      }
+      when: {
+        label: "Cart"
+        sql: ${landing_page} like '%btwn%'  ;;
+      }
+      else: "Other"
+    }
   }
 
   dimension: library {
+    group_label: "Environment Information"
     sql: ${TABLE}.library ;;
   }
 
   dimension: phone_model {
+    group_label: "Environment Information"
     sql: ${TABLE}.phone_model ;;
   }
 
   dimension: platform {
+    group_label: "Environment Information"
     sql: ${TABLE}.platform ;;
   }
 
   dimension: referrer {
+    group_label: "URL Information"
     sql: ${TABLE}.referrer ;;
   }
 
   dimension: referrer_abbreviated {
+    group_label: "URL Information"
     type: string
     sql: regexp_replace(${TABLE}.referrer, '(http://)|(https://)|(www.)|/$', '');;
   }
 
   dimension: referrer_domain {
+    group_label: "URL Information"
     sql: split_part(${referrer},'/',3) ;;
   }
 
   dimension: referrer_domain_mapped {
+    group_label: "URL Information"
     sql: CASE WHEN ${referrer_domain} like '%facebook%' THEN 'facebook' WHEN ${referrer_domain} like '%google%' THEN 'google' ELSE ${referrer_domain} END ;;
     html: {{ linked_value }}
       <a href="/dashboards/heap_block::referrer_dashboard?referrer_domain={{ value | encode_uri }}" target="_new">
@@ -89,10 +146,12 @@ view: sessions {
   }
 
   dimension: region {
+    group_label: "Location Information"
     sql: ${TABLE}.region ;;
   }
 
   dimension: search_keyword {
+    group_label: "URL Information"
     sql: ${TABLE}.search_keyword ;;
   }
 
@@ -103,47 +162,57 @@ view: sessions {
   }
 
   dimension: user_id {
+    group_label: "Heap Information"
     type: number
     # hidden: true
     sql: ${TABLE}.user_id ;;
   }
 
   dimension: utm_campaign {
+    group_label: "UTM Information"
     sql: ${TABLE}.utm_campaign ;;
   }
 
   dimension: utm_content {
+    group_label: "UTM Information"
     sql: ${TABLE}.utm_content ;;
   }
 
   dimension: utm_medium {
+    group_label: "UTM Information"
     sql: ${TABLE}.utm_medium ;;
   }
 
   dimension: utm_source {
+    group_label: "UTM Information"
     sql: ${TABLE}.utm_source ;;
   }
 
   dimension: source_medium {
+    group_label: "UTM Information"
     type: string
     sql: ${utm_source} || '/' || ${utm_medium} ;;
   }
 
   dimension: utm_term {
+    group_label: "UTM Information"
     sql: ${TABLE}.utm_term ;;
   }
 
   measure: count {
+    label: "Count of Sessions"
     type: count
     drill_fields: [detail*]
   }
 
   measure: count_distinct_ip {
+    label: "Count of distinct IP"
     type: count_distinct
     sql: ${TABLE}.ip ;;
   }
 
   measure: count_users {
+    label: "Count of Users"
     type: count_distinct
     sql: ${user_id} ;;
     drill_fields: [user_id]
@@ -156,6 +225,7 @@ view: sessions {
   }
 
   measure: total_sessions {
+    label: "Count of Unique Sessions"
     type: count_distinct
     sql: ${session_id} ;;
   }
@@ -164,6 +234,7 @@ view: sessions {
 # Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
 # Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.
   dimension: source_we_defined {
+    group_label: "URL Information"
     type: string
     sql: CASE
       WHEN ${TABLE}.referrer ILIKE '%gilt%' then 'Gilt'
@@ -226,6 +297,7 @@ view: sessions {
   }
 
   dimension: marketing_channel{
+    group_label: "URL Information"
     type: string
     sql: CASE
     when ${TABLE}.utm_medium ILIKE '%email%'
