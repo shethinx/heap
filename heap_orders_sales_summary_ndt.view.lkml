@@ -50,6 +50,47 @@ view: heap_orders_sales_summary_ndt {
     type: number
     sql: ${TABLE}.gross_btwn_sales ;;
   }
+
+  dimension: count_of_items {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.count ;;
+  }
+  dimension: count_of_thinx_items {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.count_of_thinx_items ;;
+  }
+  dimension: count_of_speax_items {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.count_of_speax_items ;;
+  }
+  dimension: count_of_btwn_items {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.count_of_btwn_items ;;
+  }
+
+  dimension: thinx_products_purchased {
+    group_label: "Products Purchased"
+    type: yesno
+    sql: ${count_of_thinx_items} > 0 ;;
+  }
+
+  dimension: speax_products_purchased {
+    group_label: "Products Purchased"
+    type: yesno
+    sql: ${count_of_speax_items} > 0 ;;
+  }
+
+  dimension: btwn_products_purchased {
+    group_label: "Products Purchased"
+    label: "BTWN Products Purchased"
+    type: yesno
+    sql: ${count_of_btwn_items} > 0 ;;
+  }
+
   dimension: net_sales {
     group_label: "Net Sales"
     value_format_name: usd
@@ -101,6 +142,29 @@ view: heap_orders_sales_summary_ndt {
     type: sum
     sql: ${gross_btwn_sales} ;;
   }
+
+  measure: total_products_purchased {
+    group_label: "Products Purchased"
+    type: sum
+    sql: ${count_of_items} ;;
+  }
+  measure: total_thinx_products_purchased {
+    group_label: "Products Purchased"
+    type: sum
+    sql: ${count_of_thinx_items} ;;
+  }
+  measure: total_speax_products_purchased {
+    group_label: "Products Purchased"
+    type: sum
+    sql: ${count_of_speax_items} ;;
+  }
+  measure: total_btwn_products_purchased {
+    group_label: "Products Purchased"
+    label: "Total BTWN Products Purchased"
+    type: sum
+    sql: ${count_of_btwn_items} ;;
+  }
+
   measure: total_net_sales {
     group_label: "Net Sales"
     value_format_name: usd
