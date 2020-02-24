@@ -64,6 +64,17 @@ view: sessions {
   dimension: landing_page {
     group_label: "URL Information"
     sql: lower(${TABLE}.landing_page) ;;
+    type: string
+    link: {
+      label: "Open URL"
+      url: "https://{{value}}"
+    }
+  }
+
+  dimension: google_ads_landing_page {
+    group_label: "URL Information"
+    type: yesno
+    sql: ${landing_page} like '%gclid%';;
   }
 
   dimension: landing_page_type {
