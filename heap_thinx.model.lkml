@@ -73,6 +73,13 @@ explore: sessions {
     relationship: one_to_one
   }
 
+  join: heap_orders_sales_summary_ndt {
+    view_label: "Shopify Order Information"
+    type: left_outer
+    sql_on: ${sessions.session_id} = ${heap_orders_sales_summary_ndt.session_id} ;;
+    relationship: one_to_one
+  }
+
 }
 
 explore: pageviews {}
