@@ -81,40 +81,41 @@ view: sessions {
     group_label: "URL Information"
     case: {
       when: {
-        label: "Thinx"
-        sql: ${landing_page} like '%thinx%' OR ${landing_page} = 'www.shethinx.com/' ;;
-      }
-      when: {
-        label: "Speax"
-        sql: ${landing_page} like '%speax%' ;;
+        label: "Blog"
+        sql: ${landing_page} like '%blogs/%'  ;;
       }
       when: {
         label: "BTWN"
         sql: ${landing_page} like '%btwn%'  ;;
       }
       when: {
-        label: "Blogs"
-        sql: ${landing_page} like '%blogs%'  ;;
+        label: "Speax"
+        sql: ${landing_page} like '%speax%' ;;
+      }
+      when: {
+        label: "Thinx"
+        sql: ${landing_page} like '%/thinx%' OR ${landing_page} = 'www.shethinx.com/' ;;
       }
       when: {
         label: "Orders"
-        sql: ${landing_page} like '%orders%'  ;;
+        sql: ${landing_page} like '%/orders/%'  ;;
       }
       when: {
         label: "Account"
-        sql: ${landing_page} like '%account%'  ;;
+        sql: ${landing_page} like '%/account%'  ;;
       }
       when: {
         label: "Leader"
-        sql: ${landing_page} like '%leader%'  ;;
+        sql: ${landing_page} like '%/leader-%'  ;;
       }
       when: {
         label: "Cart"
-        sql: ${landing_page} like '%btwn%'  ;;
+        sql: ${landing_page} like '%/cart%'  ;;
       }
       else: "Other"
     }
   }
+
 
   dimension: library {
     group_label: "Environment Information"
