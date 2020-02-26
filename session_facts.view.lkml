@@ -1,5 +1,7 @@
 view: session_facts {
   derived_table: {
+    datagroup_trigger: heap_refresh
+    distribution_style: all
     #sortkeys: ["session_start_time"]
     #distribution: "session_unique_id"
     # update trigger value to desired frequency and timezone
