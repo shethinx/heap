@@ -122,6 +122,21 @@ view: pageviews {
     sql: ${path} like '%checkouts%' or ${path} like '%checkouts%';;
   }
 
+  dimension: session_include_gclid {
+    group_label: "Session Information"
+    type: yesno
+    sql: ${query} like '%gclid%';;
+  }
+
+  measure: count_of_gclid_touched {
+    group_label: "Session Information"
+    type: count
+    filters: {
+      field: session_include_gclid
+      value: "Yes"
+    }
+  }
+
   measure: count_of_thinx_pages_touched {
     group_label: "Page Type"
     type: count
@@ -373,7 +388,7 @@ view: pageviews {
 
   dimension: query {
     type: string
-    sql: ${TABLE}.query ;;
+    sql: lower(${TABLE}.query) ;;
   }
 
   dimension: referrer {

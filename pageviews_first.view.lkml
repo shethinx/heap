@@ -22,55 +22,55 @@
 # }
 
 
-# view: pageviews_first {
-#   derived_table: {
-#     datagroup_trigger: heap_refresh
-#     distribution: "session_id"
-#     sortkeys: ["session_time"]
-#     #sql: WITH pageviews_ranking as (
-    #--  Select session_id, session_time, row_number () over ( partition by session_id order by session_time) as session_page_order, path, query
-    # --  FROM heap_thinx.pageviews
-    # --  )
-    # --  Select session_id, session_time, session_page_order, path, query
-   #--    FROM pageviews_ranking
- #--      where session_page_order = 1
-#--       ;;
-#   }
+view: pageviews_first {
+  derived_table: {
+    datagroup_trigger: heap_refresh
+    distribution_style: all
+    sortkeys: ["sesion_id"]
+    sql: WITH pageviews_ranking as (
+      Select session_id, session_time, row_number () over ( partition by session_id order by session_time) as session_page_order, path, query
+      FROM heap_thinx.pageviews
+      )
+      Select session_id, session_time, session_page_order, path, query
+       FROM pageviews_ranking
+       where session_page_order = 1
+       ;;
+  }
 
 
-#   dimension: session_id {
-#     hidden: yes
-#     type: number
-#     sql: ${TABLE}.session_id ;;
-#   }
+  dimension: session_id {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.session_id ;;
+  }
 
-#   dimension_group: session_time {
-#     hidden: yes
-#     type: time
-#     sql: ${TABLE}.session_time ;;
-#   }
+  dimension_group: session_time {
+    hidden: yes
+    type: time
+    sql: ${TABLE}.session_time ;;
+  }
 
-#   dimension: session_page_order {
-#     hidden: yes
-#     type: number
-#     sql: ${TABLE}.session_page_order ;;
-#   }
+  dimension: session_page_order {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.session_page_order ;;
+  }
 
-#   dimension: path {
-#     type: string
-#     sql: ${TABLE}.path ;;
-#     link: {
-#       label: "Link to Path"
-#       url: "www.shethinx.com{{value}}"
-#     }
-#   }
+  dimension: path {
+    type: string
+    sql: ${TABLE}.path ;;
+    link: {
+      label: "Link to Path"
+      url: "www.shethinx.com{{value}}"
+    }
+  }
 
-#   dimension: query {
-#     type: string
-#     sql: ${TABLE}.query ;;
-#   }
+  dimension: query {
+    type: string
+    sql: ${TABLE}.query ;;
+  }
 
-#   set: detail {
-#     fields: [session_id, session_time_time, session_page_order, path, query]
-#   }
-# }
+  set: detail {
+    fields: [session_id, session_time_time, session_page_order, path, query]
+  }
+}

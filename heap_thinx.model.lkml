@@ -86,11 +86,11 @@ explore: sessions {
   #   relationship: one_to_many
   # }
 
-  # join: pageviews_first {
-  #   type: left_outer
-  #   sql_on: ${pageviews_first.session_id} = ${pageviews_first.session_id} ;;
-  #   relationship: one_to_one
-  # }
+  join: pageviews_first {
+    type: left_outer
+    sql_on: ${pageviews_first.session_id} = ${pageviews_first.session_id} ;;
+    relationship: one_to_one
+  }
 
 }
 
