@@ -133,15 +133,14 @@ view: pageviews_summary {
     type: yesno
     sql: ${count_of_speax_product_pages_touched} > 0 ;;
   }
-  dimension: session_include_gclid_dim {
+  dimension: count_of_gclid_touched {
     hidden: yes
     type: yesno
-    sql: ${TABLE}.session_include_gclid ;;
+    sql: ${TABLE}.count_of_gclid_touched ;;
   }
   dimension: session_include_gclid {
-    group_label: "Session Information"
     type: yesno
-    sql: ${session_include_gclid_dim} > 0 ;;
+    sql: ${count_of_gclid_touched} > 0 ;;
   }
 
   measure: total_account_pages_touched {

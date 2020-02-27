@@ -87,8 +87,9 @@ explore: sessions {
   # }
 
   join: pageviews_first {
+    view_label: "Pageviews Summary"
     type: left_outer
-    sql_on: ${pageviews_first.session_id} = ${pageviews_first.session_id} ;;
+    sql_on: ${sessions.session_id} = ${pageviews_first.session_id} ;;
     relationship: one_to_one
   }
 
