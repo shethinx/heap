@@ -1,5 +1,6 @@
 view: pageviews_summary {
   derived_table: {
+    publish_as_db_view: yes
     datagroup_trigger: heap_refresh
     distribution: "session_id"
     sortkeys: ["session_id"]
