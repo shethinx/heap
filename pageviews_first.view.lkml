@@ -26,7 +26,7 @@ view: pageviews_first {
   derived_table: {
     datagroup_trigger: heap_refresh
     distribution_style: all
-    sortkeys: ["sesion_id"]
+    sortkeys: ["session_id"]
     sql: WITH pageviews_ranking as (
       Select session_id, session_time, row_number () over ( partition by session_id order by session_time) as session_page_order, path, query
       FROM heap_thinx.pageviews
