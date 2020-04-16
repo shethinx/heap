@@ -93,6 +93,12 @@ explore: sessions {
     relationship: one_to_one
   }
 
+  join: sendgrid_summary {
+    type: left_outer
+    sql_on: ${sessions.sendgrid_marketing_campaign_id} = ${sendgrid_summary.marketing_campaign_id} and ${sessions.session_date} = ${sendgrid_summary.event_date} ;;
+    relationship: one_to_many
+  }
+
 }
 
 explore: sendgrid_events {

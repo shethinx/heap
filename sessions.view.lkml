@@ -169,7 +169,7 @@ view: sessions {
 
   dimension_group: session {
     type: time
-    timeframes: [time, date, week, month, hour_of_day, day_of_week_index]
+    timeframes: [raw,time, date, week, month, hour_of_day, day_of_week_index]
     sql: ${TABLE}.time ;;
   }
 
@@ -185,9 +185,45 @@ view: sessions {
     sql: ${TABLE}.utm_campaign ;;
   }
 
+  dimension: utm_campaign_brand {
+    group_label: "UTM Information"
+    case: {
+      when: {
+        label: "THINX"
+        sql: upper(${utm_campaign}) like '%THINX%' ;;
+      }
+      when: {
+        label: "Speax"
+        sql: upper(${utm_campaign}) like '%SPEAX%' ;;
+      }
+      when: {
+        label: "BTWN"
+        sql: upper(${utm_campaign}) like '%BTWN%' ;;
+      }
+      when: {
+        label: "Tribrand"
+        sql: upper(${utm_campaign}) like '%TRIBRAND%' ;;
+      }
+      else: "Unidentified"
+    }
+  }
+
+
   dimension: utm_content {
     group_label: "UTM Information"
     sql: ${TABLE}.utm_content ;;
+  }
+
+  dimension: sendgrid_email_type {
+    group_label: "UTM Sendgrid Information"
+    type: string
+    sql: CASE WHEN ${utm_source} = 'sengrid' THEN NULLIF(SPLIT_PART(${utm_content}, '|', 1),'') ELSE NULL END ;;
+  }
+
+  dimension: sendgrid_email_area_clicked {
+    group_label: "UTM Sendgrid Information"
+    type: string
+    sql: CASE WHEN ${utm_source} = 'sengrid' THEN NULLIF(SPLIT_PART(${utm_content}, '|', 5),'') ELSE NULL END ;;
   }
 
   dimension: sendgrid_marketing_campaign_id {
@@ -211,7 +247,22 @@ view: sessions {
 
   dimension: utm_source {
     group_label: "UTM Information"
+    label: "UTM Source Original Value"
     sql: ${TABLE}.utm_source ;;
+  }
+
+  dimension: utm_source_cleam {
+    group_label: "UTM Information"
+    label: "UTM Source"
+    sql: CASE WHEN UPPER(${utm_source}) LIKE '%F%BIG%' THEN 'Facebook/Instagram'
+    WHEN UPPER(${utm_source}) LIKE '%INSTAGRAM%' THEN 'Instagram'
+    WHEN UPPER(${utm_source}) LIKE '%FACEBOOK%' THEN 'Facebook'
+    WHEN UPPER(${utm_source}) LIKE '%PINTEREST%' THEN 'Pinterest'
+    WHEN UPPER(${utm_source}) LIKE '%AFFILIATE%' then 'Affiliate'
+    WHEN UPPER(${utm_source}) LIKE '%YAHOO%' then 'Yahoo'
+    WHEN UPPER(${utm_source}) LIKE '%SEN%GRID%' then 'Sendgrid'
+    ELSE ${utm_source} END
+    ;;
   }
 
   dimension: source_medium {
