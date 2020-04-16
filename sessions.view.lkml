@@ -190,6 +190,20 @@ view: sessions {
     sql: ${TABLE}.utm_content ;;
   }
 
+  dimension: sendgrid_marketing_campaign_id {
+    hidden: yes
+    group_label: "UTM Sendgrid Information"
+    type: string
+    sql: CASE WHEN ${utm_source} = 'sengrid' THEN NULLIF(SPLIT_PART(${utm_content}, '|', 4),'') ELSE NULL END ;;
+  }
+
+  dimension: utm_content_part_4 {
+    hidden: yes
+    group_label: "UTM Information"
+    type: string
+    sql: NULLIF(SPLIT_PART(${utm_content}, '|', 4),'') ;;
+  }
+
   dimension: utm_medium {
     group_label: "UTM Information"
     sql: ${TABLE}.utm_medium ;;

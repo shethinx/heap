@@ -95,6 +95,12 @@ explore: sessions {
 
 }
 
+explore: sendgrid_events {
+  group_label: "Thinx Marketing"
+  label: "Sendgrid Campaigns"
+
+}
+
 explore: pageviews {}
 
 explore: funnel_explorer {
