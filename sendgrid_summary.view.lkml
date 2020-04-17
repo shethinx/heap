@@ -15,10 +15,13 @@ view: sendgrid_summary {
         field: sendgrid_events.marketing_campaign_id
         value: "NOT NULL"
       }
+      timezone: UTC
     }
   }
+
   dimension: primary_key {
     hidden: yes
+    primary_key: yes
     type: string
     sql: ${event_raw} || ${marketing_campaign_id} || ${event} ;;
   }
