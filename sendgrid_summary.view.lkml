@@ -7,24 +7,25 @@ view: sendgrid_summary {
       column: timestamp_date {}
       column: marketing_campaign_id {}
       column: marketing_campaign_name {}
+      column: event {}
       column: count_of_all_events {}
       column: count_of_email_campaign_events {}
       column: count_of_email_events {}
-      column: event {}
       filters: {
         field: sendgrid_events.marketing_campaign_id
         value: "NOT NULL"
       }
-      timezone: UTC
+      timezone: America/New_York
     }
   }
 
   dimension: primary_key {
     hidden: yes
     primary_key: yes
-    type: string
-    sql: ${event_raw} || ${marketing_campaign_id} || ${event} ;;
+    type: number
+    sql: TO_CHAR(${event_raw},'YYYYMMDD') || '|' || ${marketing_campaign_id}|| '|' || ${event} ;;
   }
+
   dimension_group: event {
     type: time
     timeframes: [
