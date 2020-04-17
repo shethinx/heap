@@ -1,23 +1,5 @@
 view: sendgrid_summary {
-#   derived_table: {
-#     datagroup_trigger: heap_refresh
-#     distribution: "marketing_campaign_id"
-#     sortkeys: ["timestamp_date"]
-#     explore_source: sendgrid_events {
-#       column: timestamp_date {}
-#       column: marketing_campaign_id {}
-#       column: marketing_campaign_name {}
-#       column: event {}
-#       column: count_of_all_events {}
-#       column: count_of_email_campaign_events {}
-#       column: count_of_email_events {}
-#       filters: {
-#         field: sendgrid_events.marketing_campaign_id
-#         value: "NOT NULL"
-#       }
-#       timezone: America/New_York
-#     }
-
+  #went with a dynamic sql derived table for accurate reporting on distinct counts
   derived_table: {
     sql:
       SELECT
