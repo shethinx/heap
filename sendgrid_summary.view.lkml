@@ -15,7 +15,6 @@ view: sendgrid_summary {
         field: sendgrid_events.marketing_campaign_id
         value: "NOT NULL"
       }
-      timezone: UTC
     }
   }
 
