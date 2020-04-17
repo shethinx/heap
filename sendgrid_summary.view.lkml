@@ -35,6 +35,7 @@ view: sendgrid_summary {
       quarter,
       year
     ]
+    convert_tz: no
     sql: ${TABLE}.timestamp_date ;;
   }
   dimension: marketing_campaign_id {
