@@ -43,20 +43,20 @@ view: sendgrid_summary {
   dimension: marketing_campaign_id {
     type: number
     sql: ${TABLE}.marketing_campaign_id ;;
-    suggest_explore: sendgrid_campaigns
-    suggest_dimension: marketing_campaign_id
+    suggest_explore: sendgrid_events
+    suggest_dimension: sendgrid_events.marketing_campaign_id
   }
   dimension: marketing_campaign_name {
     type: string
     sql: ${TABLE}.marketing_campaign_name ;;
-    suggest_explore: sendgrid_campaigns
-    suggest_dimension: marketing_campaign_name
+    suggest_explore: sendgrid_events
+    suggest_dimension: sendgrid_events.marketing_campaign_name
   }
   dimension: event {
     type: string
     sql: ${TABLE}.event ;;
-    suggest_explore: sendgrid_campaigns
-    suggest_dimension: event
+    suggest_explore: sendgrid_events
+    suggest_dimension: sendgrid_events.event
   }
   dimension: count_of_all_events_dim {
     hidden: yes

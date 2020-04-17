@@ -1,5 +1,5 @@
 view: sessions {
-  sql_table_name: (Select * FROM (SELECT *, NULLIF(SPLIT_PART(utm_content, '|', 4),'') as utm_content_part_1, ROW_NUMBER () OVER ( PARTITION BY user_id, session_id) as row_number FROM heap_thinx.sessions) as a  WHERE row_number = 1);;
+  sql_table_name: (Select * FROM (SELECT *, NULLIF(SPLIT_PART(utm_content, '|', 4),'') as utm_content_part_4, ROW_NUMBER () OVER ( PARTITION BY user_id, session_id) as row_number FROM heap_thinx.sessions) as a  WHERE row_number = 1);;
   #sql_table_name: heap_thinx.sessions ;;
   #duplicate data on what is supposed to be the primary key https://shethinx.looker.com/sql/4xywpfkyhwhbcz
 
@@ -216,9 +216,9 @@ view: sessions {
     sql: ${TABLE}.utm_content ;;
   }
 
-  dimension: utm_content_part_1 {
+  dimension: utm_content_part_4 {
     type: string
-    sql: ${TABLE}.utm_content_part_1 ;;
+    sql: ${TABLE}.utm_content_part_4 ;;
   }
 
   dimension: sendgrid_email_type {
@@ -238,13 +238,6 @@ view: sessions {
     group_label: "UTM Sendgrid Information"
     type: string
     sql: CASE WHEN ${utm_source} = 'sengrid' THEN NULLIF(SPLIT_PART(${utm_content}, '|', 4),'') ELSE NULL END ;;
-  }
-
-  dimension: utm_content_part_4 {
-    hidden: yes
-    group_label: "UTM Information"
-    type: string
-    sql: NULLIF(SPLIT_PART(${utm_content}, '|', 4),'') ;;
   }
 
   dimension: utm_medium {
