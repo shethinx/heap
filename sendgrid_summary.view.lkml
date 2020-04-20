@@ -16,6 +16,7 @@ view: sendgrid_summary {
         and {% condition marketing_campaign_name %} marketing_campaign_name {% endcondition %}
         and {% condition event_date %} timestamp_date {% endcondition %}
         and {% condition sessions.session_date %} timestamp_date {% endcondition %}
+        and {% condition sendgrid_summary.event %} event {% endcondition %}
       GROUP BY 1,2,3 {% if sendgrid_summary.event._in_query %} ,4 {% endif %}
         ;;
   }
