@@ -217,6 +217,7 @@ view: sessions {
   }
 
   dimension: utm_content_part_4 {
+    hidden: yes
     type: string
     sql: ${TABLE}.utm_content_part_4 ;;
   }
