@@ -71,7 +71,31 @@ view: heap_orders_sales_summary_ndt {
     type: number
     sql: ${TABLE}.count_of_btwn_items ;;
   }
-
+  dimension: total_quantity_sold {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.total_quantity_sold ;;
+  }
+  dimension: total_thinx_quantity_sold {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.total_thinx_quantity_sold ;;
+  }
+  dimension: total_speax_quantity_sold {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.total_speax_quantity_sold ;;
+  }
+  dimension: total_btwn_quantity_sold {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.total_btwn_quantity_sold ;;
+  }
+  dimension: count_of_orders {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.count_of_orders ;;
+  }
   dimension: thinx_products_purchased {
     group_label: "Products Purchased"
     type: yesno
@@ -142,7 +166,6 @@ view: heap_orders_sales_summary_ndt {
     type: sum
     sql: ${gross_btwn_sales} ;;
   }
-
   measure: total_products_purchased {
     group_label: "Products Purchased"
     type: sum
@@ -164,7 +187,6 @@ view: heap_orders_sales_summary_ndt {
     type: sum
     sql: ${count_of_btwn_items} ;;
   }
-
   measure: total_net_sales {
     group_label: "Net Sales"
     value_format_name: usd
@@ -189,6 +211,31 @@ view: heap_orders_sales_summary_ndt {
     value_format_name: usd
     type: sum
     sql: ${net_btwn_sales} ;;
+  }
+  measure: total_units_sold {
+    group_label: "Units Sold"
+    type: sum
+    sql: ${total_quantity_sold} ;;
+  }
+  measure: total_thinx_units_sold {
+    group_label: "Units Sold"
+    type: sum
+    sql: ${total_thinx_quantity_sold} ;;
+  }
+  measure: total_speax_units_sold {
+    group_label: "Units Sold"
+    type: sum
+    sql: ${total_speax_quantity_sold} ;;
+  }
+  measure: total_btwn_units_sold {
+    group_label: "Units Sold"
+    label: "Total BTWN Units Sold"
+    type: sum
+    sql: ${total_btwn_quantity_sold} ;;
+  }
+  measure: total_count_of_orders {
+    type: sum
+    sql: ${count_of_orders} ;;
   }
 
   set: shopify_details {
