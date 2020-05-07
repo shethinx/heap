@@ -116,16 +116,27 @@ view: sendgrid_events {
     sql: ${TABLE}.journey_name ;;
   }
 
-  dimension: marketing_campaign_id {
+  dimension: marketing_campaign {
+    hidden: yes
     group_label: "Sendgrid Marketing Information"
     type: number
     sql: ${TABLE}.marketing_campaign_id ;;
   }
 
-  dimension: marketing_campaign_name {
-    group_label: "Sendgrid Marketing Information"
+  dimension: marketing_campaign_id {
+    type: number
+    sql: COALESCE(${marketing_campaign},${simon_template_id}) ;;
+  }
+
+  dimension: sendgrid_marketing_campaign_name {
+    hidden: yes
     type: string
     sql: ${TABLE}.marketing_campaign_name ;;
+  }
+
+  dimension: marketing_campaign_name {
+    type: string
+    sql: COALESCE(${sendgrid_marketing_campaign_name},${simon_template_name}) ;;
   }
 
   dimension: marketing_campaign_split_id {
@@ -250,8 +261,8 @@ view: sendgrid_events {
 
   dimension: simon_template_id {
     group_label: "Sendgrid Simon Information"
-    type: string
-    sql: ${TABLE}.simon_template_id ;;
+    type: number
+    sql: CAST(${TABLE}.simon_template_id as bigint) ;;
   }
 
   dimension: simon_template_name {
