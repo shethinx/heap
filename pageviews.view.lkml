@@ -470,6 +470,7 @@ view: pageviews {
   }
 
   dimension: session_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.session_id ;;
   }

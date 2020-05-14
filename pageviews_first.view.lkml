@@ -56,7 +56,8 @@ view: pageviews_first {
     sql: ${TABLE}.session_page_order ;;
   }
 
-  dimension: path {
+  dimension: first_path_of_session {
+    alias: [path]
     type: string
     sql: ${TABLE}.path ;;
     link: {
@@ -65,12 +66,12 @@ view: pageviews_first {
     }
   }
 
-  dimension: query {
+  dimension: first_query_of_session {
     type: string
     sql: ${TABLE}.query ;;
   }
 
   set: detail {
-    fields: [session_id, session_time_time, session_page_order, path, query]
+    fields: [session_id, session_time_time, session_page_order, first_path_of_session, first_query_of_session]
   }
 }

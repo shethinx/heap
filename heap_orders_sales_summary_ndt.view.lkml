@@ -264,7 +264,7 @@ view: heap_orders_sales_summary_ndt {
 
   measure: pdp_conversion {
     group_label: "Web Metrics"
-    view_label: "PDP Conversion"
+    label: "PDP Conversion"
     description: "Orders / All Sessions with PDP Touched"
     type: number
     sql: 1.0 * ${total_count_of_orders} / nullif(${pageviews_summary.sessions_any_product_pages_touched},0) ;;
