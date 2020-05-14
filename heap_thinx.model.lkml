@@ -67,12 +67,6 @@ explore: sessions {
     relationship: one_to_one
   }
 
-  join: pageviews_summary {
-    type: left_outer
-    sql_on: ${sessions.session_id} = ${pageviews_summary.session_id} ;;
-    relationship: one_to_one
-  }
-
   join: heap_orders_sales_summary_ndt {
     view_label: "Shopify Order Information"
     type: left_outer
@@ -80,16 +74,22 @@ explore: sessions {
     relationship: one_to_one
   }
 
-  # join: pageviews {
-  #   type: left_outer
-  #   sql_on: ${sessions.session_id} = ${pageviews.session_id} ;;
-  #   relationship: one_to_many
-  # }
+  join: pageviews {
+    type: left_outer
+    sql_on: ${sessions.session_id} = ${pageviews.session_id} ;;
+    relationship: one_to_many
+  }
 
   join: pageviews_first {
     view_label: "Pageviews Summary"
     type: left_outer
     sql_on: ${sessions.session_id} = ${pageviews_first.session_id} ;;
+    relationship: one_to_one
+  }
+
+  join: pageviews_summary {
+    type: left_outer
+    sql_on: ${sessions.session_id} = ${pageviews_summary.session_id} ;;
     relationship: one_to_one
   }
 

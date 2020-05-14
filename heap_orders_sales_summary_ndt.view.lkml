@@ -238,6 +238,47 @@ view: heap_orders_sales_summary_ndt {
     sql: ${count_of_orders} ;;
   }
 
+  measure: session_conversion {
+    group_label: "Web Metrics"
+    description: "Orders / All Sessions"
+    type: number
+    sql: 1.0 * ${total_count_of_orders} / nullif(${sessions.count},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: checkout_conversion {
+    group_label: "Web Metrics"
+    description: "Orders / All Sessions with Checkout Touched"
+    type: number
+    sql: 1.0 * ${total_count_of_orders} / nullif(${pageviews_summary.sessions_checkout_pages_touched},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: cart_conversion {
+    group_label: "Web Metrics"
+    description: "Orders / All Sessions with Cart Touched"
+    type: number
+    sql: 1.0 * ${total_count_of_orders} / nullif(${pageviews_summary.sessions_cart_pages_touched},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: pdp_conversion {
+    group_label: "Web Metrics"
+    view_label: "PDP Conversion"
+    description: "Orders / All Sessions with PDP Touched"
+    type: number
+    sql: 1.0 * ${total_count_of_orders} / nullif(${pageviews_summary.sessions_any_product_pages_touched},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: revenue_per_session {
+    group_label: "Web Metrics"
+    description: "Gross Sales / All Sessions"
+    type: number
+    sql: 1.0 * ${total_gross_sales} / nullif(${sessions.count},0) ;;
+    value_format_name: usd_0
+  }
+
   set: shopify_details {
     fields: [order_id,order_sequence,gross_sales,gross_thinx_sales,gross_speax_sales,gross_btwn_sales,net_sales,net_thinx_sales,net_speax_sales,net_btwn_sales]
   }

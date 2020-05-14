@@ -2,6 +2,7 @@ view: pageviews {
   sql_table_name: heap_thinx.pageviews ;;
 
   dimension: pk {
+    hidden: yes
     primary_key: yes
     type: string
     sql: ${event_id} || '|' || ${session_id} || '|' || ${user_id} ;;
@@ -116,6 +117,12 @@ view: pageviews {
     sql: ${path} like '%products/btwn%' or ${path} like '%collections/btwn%';;
   }
 
+  dimension: any_product_page_touch {
+    group_label: "Page Type"
+    type: yesno
+    sql: ${thinx_product_page_touch} OR ${speax_product_page_touch} OR ${btwn_product_page_touch} ;;
+  }
+
   dimension: checkout_page_touch {
     group_label: "Page Type"
     type: yesno
@@ -123,6 +130,7 @@ view: pageviews {
   }
 
   dimension: session_include_gclid {
+    hidden: yes
     group_label: "Session Information"
     type: yesno
     sql: ${query} like '%gclid%';;
@@ -236,6 +244,15 @@ view: pageviews {
     }
   }
 
+  measure: count_of_any_product_pages_touched {
+    group_label: "Page Type"
+    type: count
+    filters: {
+      field: any_product_page_touch
+      value: "Yes"
+    }
+  }
+
   measure: count_of_checkout_pages_touched {
     group_label: "Page Type"
     type: count
@@ -246,107 +263,128 @@ view: pageviews {
   }
 
   dimension: _ {
+    hidden: yes
     type: string
     sql: ${TABLE}._ ;;
   }
 
   dimension: app_name {
+    hidden: yes
     type: string
     sql: ${TABLE}.app_name ;;
   }
 
   dimension: app_version {
+    hidden: yes
     type: string
     sql: ${TABLE}.app_version ;;
   }
 
   dimension: b {
+    hidden: yes
     type: string
     sql: ${TABLE}.b ;;
   }
 
   dimension: browser {
+    hidden: yes
     type: string
     sql: ${TABLE}.browser ;;
   }
 
   dimension: carrier {
+    hidden: yes
     type: string
     sql: ${TABLE}.carrier ;;
   }
 
   dimension: cart_20count {
+    hidden: yes
     type: string
     sql: ${TABLE}.cart_20count ;;
   }
 
   dimension: cart_count {
+    hidden: yes
     type: string
     sql: ${TABLE}.cart_count ;;
   }
 
   dimension: city {
+    hidden: yes
     type: string
     sql: ${TABLE}.city ;;
   }
 
   dimension: country {
+    hidden: yes
     type: string
     map_layer_name: countries
     sql: ${TABLE}.country ;;
   }
 
   dimension: device {
+    hidden: yes
     type: string
     sql: ${TABLE}.device ;;
   }
 
   dimension: device_type {
+    hidden: yes
     type: string
     sql: ${TABLE}.device_type ;;
   }
 
   dimension: domain {
+    hidden: yes
     type: string
     sql: ${TABLE}.domain ;;
   }
 
   dimension: e {
+    hidden: yes
     type: string
     sql: ${TABLE}.e ;;
   }
 
   dimension: event_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.event_id ;;
   }
 
   dimension: g {
+    hidden: yes
     type: string
     sql: ${TABLE}.g ;;
   }
 
   dimension: gdpr_20popup_20state {
+    hidden: yes
     type: string
     sql: ${TABLE}.gdpr_20popup_20state ;;
   }
 
   dimension: gdpr_popup_state {
+    hidden: yes
     type: string
     sql: ${TABLE}.gdpr_popup_state ;;
   }
 
   dimension: h {
+    hidden: yes
     type: string
     sql: ${TABLE}.h ;;
   }
 
   dimension: hash {
+    hidden: yes
     type: string
     sql: ${TABLE}.hash ;;
   }
 
   dimension: ip {
+    hidden: yes
     type: string
     sql: ${TABLE}.ip ;;
   }
@@ -357,36 +395,43 @@ view: pageviews {
   }
 
   dimension: library {
+    hidden: yes
     type: string
     sql: ${TABLE}.library ;;
   }
 
   dimension: n {
+    hidden: yes
     type: string
     sql: ${TABLE}.n ;;
   }
 
   dimension: navigation_20type {
+    hidden: yes
     type: string
     sql: ${TABLE}.navigation_20type ;;
   }
 
   dimension: navigation_type {
+    hidden: yes
     type: string
     sql: ${TABLE}.navigation_type ;;
   }
 
   dimension: o {
+    hidden: yes
     type: string
     sql: ${TABLE}.o ;;
   }
 
   dimension: platform {
+    hidden: yes
     type: string
     sql: ${TABLE}.platform ;;
   }
 
   dimension: query {
+    hidden: yes
     type: string
     sql: lower(${TABLE}.query) ;;
   }
@@ -397,21 +442,25 @@ view: pageviews {
   }
 
   dimension: region {
+    hidden: yes
     type: string
     sql: ${TABLE}.region ;;
   }
 
   dimension: screen_a11y_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.screen_a11y_id ;;
   }
 
   dimension: screen_a11y_label {
+    hidden: yes
     type: string
     sql: ${TABLE}.screen_a11y_label ;;
   }
 
   dimension: search_keyword {
+    hidden: yes
     type: string
     sql: ${TABLE}.search_keyword ;;
   }
@@ -422,6 +471,7 @@ view: pageviews {
   }
 
   dimension_group: session {
+    hidden: yes
     type: time
     timeframes: [
       raw,
@@ -436,11 +486,12 @@ view: pageviews {
   }
 
   dimension: t {
+    hidden: yes
     type: string
     sql: ${TABLE}.t ;;
   }
 
-  dimension_group: time {
+  dimension_group: pageview {
     type: time
     timeframes: [
       raw,
@@ -455,57 +506,66 @@ view: pageviews {
   }
 
   dimension: title {
+    hidden: yes
     type: string
     sql: ${TABLE}.title ;;
   }
 
   dimension: user_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.user_id ;;
   }
 
   dimension: utm_campaign {
+    group_label: "UTM Information"
     type: string
     sql: ${TABLE}.utm_campaign ;;
   }
 
   dimension: utm_content {
+    group_label: "UTM Information"
     type: string
     sql: ${TABLE}.utm_content ;;
   }
 
   dimension: utm_medium {
+    group_label: "UTM Information"
     type: string
     sql: ${TABLE}.utm_medium ;;
   }
 
   dimension: utm_source {
+    group_label: "UTM Information"
     type: string
     sql: ${TABLE}.utm_source ;;
   }
 
   dimension: utm_term {
+    group_label: "UTM Information"
     type: string
     sql: ${TABLE}.utm_term ;;
   }
 
   dimension: v {
+    hidden: yes
     type: string
     sql: ${TABLE}.v ;;
   }
 
   dimension: view_controller {
+    hidden: yes
     type: string
     sql: ${TABLE}.view_controller ;;
   }
 
   dimension: w {
+    hidden: yes
     type: string
     sql: ${TABLE}.w ;;
   }
 
-  measure: count {
+  measure: count_of_pageviews {
     type: count
-    drill_fields: [user_id,session_id,event_id,path,session_date]
   }
 }

@@ -18,6 +18,7 @@ view: pageviews_summary {
       column: count_of_btwn_product_pages_touched {}
       column: count_of_checkout_pages_touched {}
       column: count_of_speax_product_pages_touched {}
+      column: count_of_any_product_pages_touched {}
       column: count_of_gclid_touched {}
     }
   }
@@ -133,6 +134,15 @@ view: pageviews_summary {
     group_label: "Page Touched"
     type: yesno
     sql: ${count_of_speax_product_pages_touched} > 0 ;;
+  }
+  dimension: count_of_any_product_pages_touched {
+    hidden: yes
+    type: number
+  }
+  dimension: any_product_page_touched {
+    group_label: "Page Touched"
+    type: yesno
+    sql: ${count_of_any_product_pages_touched} > 0 ;;
   }
   dimension: count_of_gclid_touched {
     hidden: yes
@@ -320,6 +330,15 @@ view: pageviews_summary {
     type: count
     filters: {
       field: speax_product_page_touched
+      value: "Yes"
+    }
+  }
+
+  measure: sessions_any_product_pages_touched {
+    group_label: "Session Count"
+    type: count
+    filters: {
+      field: any_product_page_touched
       value: "Yes"
     }
   }
