@@ -61,7 +61,7 @@ view: pageviews_first {
     sql: ${TABLE}.path ;;
     link: {
       label: "Link to Path"
-      url: "www.shethinx.com{{value}}"
+      url: "http://www.shethinx.com{{value}}"
     }
   }
 

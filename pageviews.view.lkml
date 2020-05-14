@@ -11,6 +11,10 @@ view: pageviews {
   dimension: path {
     type: string
     sql: lower(${TABLE}.path) ;;
+    link: {
+      label: "Link to Path"
+      url: "http://www.shethinx.com{{value}}"
+    }
   }
 
   dimension: path_page_type {
