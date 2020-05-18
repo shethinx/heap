@@ -5,6 +5,7 @@ label: "Thinx Heap Block"
 # include all the views
 include: "*.view"
 
+case_sensitive: no
 
 # include all the dashboards
 # include: "sessions_overview.dashboard"
@@ -22,6 +23,7 @@ datagroup: heap_refresh {
 persist_with: heap_refresh
 
 explore: all_events {
+  fields: [ALL_FIELDS*, -sessions.percentage_of_sessions_with_pdp]
   required_access_grants: [executive]
   join: users {
     type: left_outer
@@ -111,6 +113,7 @@ explore: sendgrid_events {
 explore: pageviews {}
 
 explore: funnel_explorer {
+  fields: [ALL_FIELDS*, -sessions.percentage_of_sessions_with_pdp]
   always_filter: {
     filters: {
       field: brand

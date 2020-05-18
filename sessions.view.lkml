@@ -308,6 +308,14 @@ view: sessions {
     sql: ${session_id} ;;
   }
 
+  measure: percentage_of_sessions_with_pdp {
+    label: "% of Sessions with PDP"
+    description: "All Sessions with PDP Touched / All Sessions"
+    type: number
+    sql: 1.0 * nullif(${pageviews_summary.sessions_any_product_pages_touched},0) / ${total_sessions} ;;
+    value_format_name: percent_1
+  }
+
 # Heap's referrer column includes the UTMs
 # Heap doesn't enable us to differentiate btw organic search and paid search. For some reason Heap doesn't show the gclid, which is how I differentiate those two in Shopify data.
 # Can see referrer column from Google includes either search? or url? for people typing the url into the chrome url/search bar.

@@ -276,7 +276,7 @@ view: heap_orders_sales_summary_ndt {
     description: "Gross Sales / All Sessions"
     type: number
     sql: 1.0 * ${total_gross_sales} / nullif(${sessions.count},0) ;;
-    value_format_name: usd_0
+    value_format_name: usd
   }
 
   set: shopify_details {
