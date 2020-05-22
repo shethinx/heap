@@ -511,7 +511,6 @@ view: pageviews {
   }
 
   dimension: title {
-    hidden: yes
     type: string
     sql: ${TABLE}.title ;;
   }
