@@ -139,3 +139,8 @@ explore: funnel_explorer {
     relationship: one_to_one
   }
 }
+
+explore: pageviews_summary_leader {
+  hidden: yes
+  #used just to generate table for use in main thinx explore
+}
