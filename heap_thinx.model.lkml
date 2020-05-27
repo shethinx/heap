@@ -82,6 +82,19 @@ explore: sessions {
     relationship: one_to_many
   }
 
+  join: leader_codes {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pageviews.title} ilike '%' || ${leader_codes.leader_name} || '%' ;;
+  }
+
+  join: heap_orders_leader_sales_summary_ndt {
+    view_label: "Leader Codes"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${sessions.session_date} = ${heap_orders_leader_sales_summary_ndt.created_date} and ${leader_codes.discount_code} = ${heap_orders_leader_sales_summary_ndt.discount_code} ;;
+  }
+
   join: pageviews_first {
     view_label: "Pageviews Summary"
     type: left_outer
