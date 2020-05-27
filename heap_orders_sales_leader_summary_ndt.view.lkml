@@ -6,7 +6,7 @@ view: heap_orders_leader_sales_summary_ndt {
     hidden: yes
     primary_key: yes
     type: string
-    sql: ${created_date} || ${discount_code} ;;
+    sql: ${created_date} || ${leader_name} ;;
   }
 
   dimension: created_date {
@@ -16,10 +16,10 @@ view: heap_orders_leader_sales_summary_ndt {
     sql: ${TABLE}.created_date ;;
   }
 
-  dimension: discount_code {
+  dimension: leader_name {
     hidden: yes
     type: string
-    sql: ${TABLE}.code ;;
+    sql: ${TABLE}.leader_name ;;
   }
 
   dimension: count_of_orders {
