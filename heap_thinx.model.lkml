@@ -92,8 +92,9 @@ explore: sessions {
     view_label: "Leader Codes"
     type: left_outer
     relationship: many_to_one
-    #sql_on: ${sessions.session_date} = ${heap_orders_leader_sales_summary_ndt.created_date} and ${leader_codes.leader_name} = ${heap_orders_leader_sales_summary_ndt.leader_name} ;;
-    sql_on: ${leader_codes.leader_name} = ${heap_orders_leader_sales_summary_ndt.leader_name} ;;
+    sql_on: ${sessions.session_date} = ${heap_orders_leader_sales_summary_ndt.created_date} and ${leader_codes.leader_name} = ${heap_orders_leader_sales_summary_ndt.leader_name} ;;
+    #sql_on: ${leader_codes.leader_name} = ${heap_orders_leader_sales_summary_ndt.leader_name} ;;
+    #Change here for trying join together join on date and leader name
   }
 
   join: pageviews_first {
