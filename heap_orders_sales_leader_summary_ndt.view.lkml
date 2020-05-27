@@ -3,11 +3,10 @@ view: heap_orders_leader_sales_summary_ndt {
   #sql_table_name: looker_scratch.uc_thinx_heap_orders_leader_sales_summary_ndt ;;
 
   derived_table: {
-    #Created date is in EST timezone (but since it's a date, that information is lose). The condition will be performed in UTC, so I say the date is at UTC.
     sql:
     SELECT leader_name, SUM(count) as count_of_orders
     FROM looker_scratch.uc_thinx_heap_orders_leader_sales_summary_ndt
-    WHERE {% condition sessions.session_date %} CAST(created_date as timestamp) AT TIME ZONE 'UTC' {% endcondition %}
+    WHERE {% condition sessions.session_date %} created_date {% endcondition %}
     GROUP BY 1;;
   }
 
