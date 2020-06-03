@@ -1,5 +1,7 @@
 view: sessions {
-  sql_table_name: (Select * FROM (SELECT *, NULLIF(SPLIT_PART(utm_content, '|', 4),'') as utm_content_part_4, ROW_NUMBER () OVER ( PARTITION BY user_id, session_id) as row_number FROM heap_thinx.sessions) as a  WHERE row_number = 1);;
+
+  sql_table_name: ${sessions_dedupe.SQL_TABLE_NAME} ;;
+  #sql_table_name: (Select * FROM (SELECT *, NULLIF(SPLIT_PART(utm_content, '|', 4),'') as utm_content_part_4, ROW_NUMBER () OVER ( PARTITION BY user_id, session_id) as row_number FROM heap_thinx.sessions) as a  WHERE row_number = 1);;
   #sql_table_name: heap_thinx.sessions ;;
   #duplicate data on what is supposed to be the primary key https://shethinx.looker.com/sql/4xywpfkyhwhbcz
 

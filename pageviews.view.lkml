@@ -1,11 +1,13 @@
 view: pageviews {
-  sql_table_name: heap_thinx.pageviews ;;
+  sql_table_name: ${pageviews_dedupe.SQL_TABLE_NAME} ;;
+  #sql_table_name: heap_thinx.pageviews ;;
+  #Duplicate entries
 
-  dimension: pk {
-    hidden: yes
+  dimension: event_id {
     primary_key: yes
-    type: string
-    sql: ${event_id} || '|' || ${session_id} || '|' || ${user_id} ;;
+    #hidden: yes
+    type: number
+    sql: ${TABLE}.event_id ;;
   }
 
   dimension: path {
@@ -15,6 +17,11 @@ view: pageviews {
       label: "Link to Path"
       url: "http://www.shethinx.com{{value}}"
     }
+  }
+
+  dimension: full_path {
+    type: string
+    sql: ${domain} || ${path} ;;
   }
 
   dimension: path_page_type {
@@ -351,12 +358,6 @@ view: pageviews {
     sql: ${TABLE}.e ;;
   }
 
-  dimension: event_id {
-    hidden: yes
-    type: number
-    sql: ${TABLE}.event_id ;;
-  }
-
   dimension: g {
     hidden: yes
     type: string
@@ -571,5 +572,11 @@ view: pageviews {
 
   measure: count_of_pageviews {
     type: count
+  }
+
+  dimension: pageview_reverse_order {
+    #hidden: yes
+    type: number
+    sql: ROW_NUMBER() OVER (PARTITION BY ${session_id} || '|' || ${user_id} ORDER BY ${pageview_raw} DESC ) ;;
   }
 }

@@ -447,6 +447,58 @@ view: sendgrid_summary {
     sql: ${count_of_email_unsubscribe} ;;
   }
 
+  measure: open_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Open / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${total_count_of_all_open} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: ctr {
+    group_label: "Marketing Metrics"
+    label: "CTR"
+    description: "Count of All Click / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${total_count_of_all_click} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: spam_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Spam / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${total_count_of_all_spam} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: unsub_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Unsubscribe / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${total_count_of_all_unsubscribe} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: cvr {
+    group_label: "Marketing Metrics"
+    label: "CVR"
+    description: "Total Count of Orders / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${heap_orders_sales_summary_ndt.total_count_of_orders} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: revenue_per_delivered {
+    group_label: "Marketing Metrics"
+    description: "Total Gross Sales / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${heap_orders_sales_summary_ndt.total_gross_sales} / nullif(${total_count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+#CVR (heap.shopify orders/delivered)
+#Revenue per Delivered (heap.shopify gross / delivered)
 
 
 

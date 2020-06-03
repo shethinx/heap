@@ -17,7 +17,7 @@ access_grant: executive {
 }
 
 datagroup: heap_refresh {
-  sql_trigger:  SELECT FLOOR(EXTRACT(epoch from GETDATE()) / (6*60*60)) ;; #refresh every 6 hours
+  sql_trigger:  SELECT FLOOR(EXTRACT(epoch from GETDATE()) / (8*60*60)) ;; #refresh every 8 hours
 }
 
 persist_with: heap_refresh
@@ -80,6 +80,12 @@ explore: sessions {
     type: left_outer
     sql_on: ${sessions.session_id} = ${pageviews.session_id} ;;
     relationship: one_to_many
+  }
+
+  join: pageviews_exit_page {
+    type: left_outer
+    sql_on: ${sessions.session_id} = ${pageviews_exit_page.session_id} ;;
+    relationship: one_to_one
   }
 
   join: leader_codes {

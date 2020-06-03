@@ -599,6 +599,39 @@ view: sendgrid_events {
     drill_fields: [detail*]
   }
 
+  measure: open_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Open / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${count_of_all_open} / nullif(${count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: ctr {
+    group_label: "Marketing Metrics"
+    label: "CTR"
+    description: "Count of All Click / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${count_of_all_click} / nullif(${count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: spam_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Spam / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${count_of_all_spam} / nullif(${count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
+  measure: unsub_rate {
+    group_label: "Marketing Metrics"
+    description: "Count of All Unsubscribe / Count of All Delivered"
+    type: number
+    sql: 1.0 * ${count_of_all_unsubscribe} / nullif(${count_of_all_delivered},0) ;;
+    value_format_name: percent_1
+  }
+
 
   # ----- Sets of fields for drilling ------
   set: detail {
