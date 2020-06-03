@@ -486,7 +486,7 @@ view: sendgrid_summary {
     description: "Total Count of Orders / Count of All Delivered"
     type: number
     sql: 1.0 * ${heap_orders_sales_summary_ndt.total_count_of_orders} / nullif(${total_count_of_all_delivered},0) ;;
-    value_format_name: percent_1
+    value_format_name: decimal_2
   }
 
   measure: revenue_per_delivered {
@@ -494,7 +494,7 @@ view: sendgrid_summary {
     description: "Total Gross Sales / Count of All Delivered"
     type: number
     sql: 1.0 * ${heap_orders_sales_summary_ndt.total_gross_sales} / nullif(${total_count_of_all_delivered},0) ;;
-    value_format_name: percent_1
+    value_format_name: usd
   }
 
 #CVR (heap.shopify orders/delivered)
