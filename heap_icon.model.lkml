@@ -14,7 +14,7 @@ access_grant: executive {
 
 
 explore: all_events_icon {
-  required_access_grants: [executive]
+  # required_access_grants: [executive]
   join: users_icon {
     type: left_outer
     sql_on: ${all_events_icon.user_id} = ${users_icon.user_id} ;;
@@ -41,7 +41,7 @@ explore: all_events_icon {
 
 
 explore: sessions_icon {
-  required_access_grants: [executive]
+  # required_access_grants: [executive]
   join: users {
     type: left_outer
     sql_on: ${sessions_icon.user_id} = ${users.user_id} ;;
@@ -64,7 +64,7 @@ explore: sessions_icon {
 
 
 explore: funnel_explorer_icon {
-  required_access_grants: [executive]
+  # required_access_grants: [executive]
   join: sessions_icon {
     type: left_outer
     sql_on: ${funnel_explorer_icon.session_unique_id} = ${sessions_icon.session_unique_id} ;;

@@ -24,7 +24,7 @@ persist_with: heap_refresh
 
 explore: all_events {
   fields: [ALL_FIELDS*, -sessions.percentage_of_sessions_with_pdp]
-  required_access_grants: [executive]
+  # required_access_grants: [executive]
   join: users {
     type: left_outer
     sql_on: ${all_events.user_id} = ${users.user_id} ;;
@@ -50,7 +50,7 @@ explore: all_events {
 }
 
 explore: sessions {
-  required_access_grants: [executive]
+  # required_access_grants: [executive]
   join: users {
     type: left_outer
     sql_on: ${sessions.user_id} = ${users.user_id} ;;
