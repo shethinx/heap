@@ -85,8 +85,16 @@ view: sessions {
     group_label: "URL Information"
     case: {
       when: {
-        label: "Blog"
-        sql: ${landing_page} like '%blogs/%'  ;;
+        label: "Blog-BTWN"
+        sql: ${landing_page} like '%blogs/%' AND ${landing_page} like '%btwn%';;
+      }
+      when: {
+        label: "Blog-Speax"
+        sql: ${landing_page} like '%blogs/%' AND ${landing_page} like '%speax%';;
+      }
+      when: {
+        label: "Blog-Thinx"
+        sql: ${landing_page} like '%blogs/%';;
       }
       when: {
         label: "BTWN"
