@@ -3,7 +3,8 @@ connection: "main_redshift_cluster"
 # Heap is also in the main thinx and icon models
 label: "Thinx Heap Block"
 # include all the views
-include: "*.view"
+include: "/views_both/*.view"
+include: "/views_thinx/*.view"
 
 case_sensitive: no
 
@@ -121,16 +122,7 @@ explore: sessions {
     and ${sessions.utm_source_clean} = 'Sendgrid' ;;
     relationship: many_to_one
   }
-
 }
-
-explore: sendgrid_events {
-  group_label: "Thinx Marketing"
-  label: "Sendgrid Campaigns"
-
-}
-
-explore: pageviews {}
 
 explore: funnel_explorer {
   fields: [ALL_FIELDS*, -sessions.percentage_of_sessions_with_pdp]
@@ -163,4 +155,15 @@ explore: funnel_explorer {
 explore: pageviews_summary_leader {
   hidden: yes
   #used just to generate table for use in main thinx explore
+}
+
+explore: pageviews {
+  hidden: yes
+  #used to generate pageviews_summary and pageviews_summary_leader
+}
+
+explore: sendgrid_events {
+  group_label: "Thinx Marketing"
+  label: "Sendgrid Campaigns"
+  #primarily used to generate sendgrid_sumamry
 }

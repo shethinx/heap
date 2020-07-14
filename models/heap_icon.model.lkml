@@ -4,7 +4,8 @@ connection: "icon_redshift_cluster"
 label: "Icon Heap"
 
 # include all the views
-include: "*.view"
+include: "/views_both/*.view"
+include: "/views_icon/*.view"
 
 # include all the dashboards
 access_grant: executive {
