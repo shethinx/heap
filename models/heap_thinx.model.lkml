@@ -3,7 +3,8 @@ connection: "main_redshift_cluster"
 # Heap is also in the main thinx and icon models
 label: "Thinx Heap Block"
 # include all the views
-include: "*.view"
+include: "/views_both/*.view"
+include: "/views_thinx/*.view"
 
 case_sensitive: no
 
